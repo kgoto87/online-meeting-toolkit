@@ -7,9 +7,20 @@
     border-radius: 8px;
     overflow: hidden;
 
+    .timer {
+        white-space: nowrap;
 
+        input,
+        button {
+            background-color: rgba(0, 0, 0, 0);
+            border: none;
         }
-        }
+
+        // input::-webkit-inner-spin-button {
+        //     opacity: 1;
+        // }
+    }
+
     .music-player {
         audio {
             height: 20px;
