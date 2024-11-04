@@ -1,0 +1,19 @@
+{
+    "name": "meetingassistant",
+    "version": "0.1.0",
+    "description": "Some extra functions to assist your online meeting",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "tsc && vite build --emptyOutDir"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/chrome": "^0.0.280",
+        "sass-embedded": "^1.80.6",
+        "typescript": "^5.6.3",
+        "vite": "^5.4.10"
+    }
+}

@@ -1,0 +1,32 @@
+#meeting-helper {
+    position: fixed;
+    z-index: 999999;
+    background-color: rgba(200, 200, 200, 0.5);
+    padding: 6px 0 0;
+    cursor: grab;
+    border-radius: 8px;
+    overflow: hidden;
+
+    audio {
+        height: 20px;
+        vertical-align: bottom;
+        width: 130px;
+        cursor: pointer;
+
+        &::-webkit-media-controls-timeline,
+        &::-webkit-media-controls-current-time-display,
+        &::-webkit-media-controls-time-remaining-display {
+            display: none;
+        }
+        &::-webkit-media-controls-enclosure {
+            border-radius: 0;
+            background-color: rgba(200, 200, 200, 0.5);
+        }
+
+        &:hover {
+            &::-webkit-media-controls-enclosure {
+                background-color: rgba(200, 200, 200, 0.9);
+            }
+        }
+    }
+}
