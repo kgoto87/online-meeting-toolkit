@@ -1,7 +1,7 @@
 import "./styles.scss";
 import container from "./parts/container";
-import music from "./parts/musicPlayer";
+import musicPlayer from "./parts/musicPlayer";
 
-container.appendChild(music);
+container.appendChild(musicPlayer);
 
 document.body.appendChild(container);
