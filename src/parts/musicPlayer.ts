@@ -8,7 +8,7 @@ music.src = chrome.runtime.getURL(YugureAvenue);
 music.controls = true;
 music.autoplay = true;
 music.loop = true;
-music.volume = 0.1;
+music.volume = 0.01;
 
 musicPlayer.appendChild(music);
 
