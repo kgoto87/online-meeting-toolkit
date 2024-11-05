@@ -1,4 +1,5 @@
-import gong from "../public/assets/musics/gong.mp3";
+import gong from "../../public/assets/musics/gong.mp3";
+import createPredefinedButton from "./predefinedButton";
 
 const se = document.createElement("audio");
 se.src = chrome.runtime.getURL(gong);
@@ -62,5 +63,16 @@ function stopTimer() {
 
 timer.appendChild(time);
 timer.appendChild(startButton);
+
+function setTimer(min: number, sec: number) {
+    if (!isRunning) {
+        minutes.value = min.toString();
+        seconds.value = sec.toString();
+    }
+}
+
+const OneMunitueButton = createPredefinedButton(1, 0, () => setTimer(1, 0));
+
+timer.appendChild(OneMunitueButton);
 
 export default timer;
