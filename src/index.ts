@@ -1,7 +1,7 @@
 import "./styles.scss";
 import container from "./parts/container";
 import musicPlayer from "./parts/musicPlayer";
-import timer from "./parts/timer";
+import timer from "./parts/timer/timer";
 
 container.appendChild(timer);
 container.appendChild(musicPlayer);
