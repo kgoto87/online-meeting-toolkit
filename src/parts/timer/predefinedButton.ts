@@ -8,5 +8,6 @@ export default function createPredefinedButton(
         .toString()
         .padStart(2, "0")}`;
     button.addEventListener("click", callback);
+    button.className = "predefined-button";
     return button;
 }
