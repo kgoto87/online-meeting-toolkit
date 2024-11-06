@@ -2,7 +2,7 @@
     position: fixed;
     z-index: 999999;
     background-color: rgba(200, 200, 200, 0.5);
-    padding: 6px 0 0;
+    padding: 0.5em 0 0;
     cursor: grab;
     border-radius: 8px;
     overflow: hidden;
@@ -10,11 +10,13 @@
     .timer {
         white-space: nowrap;
         font-size: 18px;
+        cursor: default;
 
         input,
         button {
             background-color: rgba(0, 0, 0, 0);
             border: none;
+            cursor: pointer;
         }
 
         .predefined-button {
