@@ -5,7 +5,7 @@
     "version": "0.1.0",
     "content_scripts": [
         {
-            "matches": ["https://*.notion.so/*"],
+            "matches": ["https://*.notion.so/*", "https://docs.google.com/presentation/*"],
             "js": ["index.js"],
             "css": ["assets/index.css"]
         }
