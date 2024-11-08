@@ -130,8 +130,8 @@ function stopTimer() {
     clearInterval(interval);
 }
 
+timeWrapper.appendChild(startButton);
 timer.appendChild(timeWrapper);
-timer.appendChild(startButton);
 
 function setTimer(min: number, sec: number) {
     if (!isRunning) {
@@ -147,6 +147,7 @@ const fiveMunitueButton = createPredefinedButton(5, 0, () => setTimer(5, 0));
 const tenMunitueButton = createPredefinedButton(10, 0, () => setTimer(10, 0));
 
 const predefinedButtonWrapper = document.createElement("div");
+predefinedButtonWrapper.className = "predefined-button-wrapper";
 
 predefinedButtonWrapper.appendChild(oneMunitueButton);
 predefinedButtonWrapper.appendChild(fiveMunitueButton);
