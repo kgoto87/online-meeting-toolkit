@@ -1,7 +1,7 @@
 {
-    "name": "meetingassistant",
+    "name": "online-meeting-toolkit",
     "version": "0.1.0",
-    "description": "Some extra functions to assist your online meeting",
+    "description": "Some extra functions to brighten up your online meeting",
     "main": "index.js",
     "type": "module",
     "scripts": {
