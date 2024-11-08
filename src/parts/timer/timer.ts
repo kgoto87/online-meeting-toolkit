@@ -1,5 +1,6 @@
 import gong from "../../public/assets/musics/gong.mp3";
 import createPredefinedButton from "./predefinedButton";
+import createTimeUnit from "./timeUnit";
 
 const se = document.createElement("audio");
 se.src = chrome.runtime.getURL(gong);
@@ -11,83 +12,8 @@ timer.addEventListener("mousedown", (e) => {
     e.stopPropagation();
 });
 
-const minutesInput = document.createElement("input");
-minutesInput.type = "number";
-minutesInput.value = "0";
-minutesInput.min = "0";
-minutesInput.max = "59";
-
-const minutesDisplay = document.createElement("span");
-minutesDisplay.className = "time-display";
-minutesDisplay.innerText = minutesInput.value.padStart(2, "0");
-minutesInput.addEventListener("change", () => {
-    minutesDisplay.innerText = minutesInput.value.padStart(2, "0");
-});
-
-const incrementMinuteButton = document.createElement("button");
-incrementMinuteButton.innerText = "+";
-incrementMinuteButton.addEventListener("click", () => {
-    if (parseInt(minutesInput.value) >= 59) return;
-    minutesInput.value = (parseInt(minutesInput.value) + 1).toString();
-    minutesInput.dispatchEvent(new Event("change"));
-});
-
-const decrementMinuteButton = document.createElement("button");
-decrementMinuteButton.innerText = "-";
-decrementMinuteButton.addEventListener("click", () => {
-    if (parseInt(minutesInput.value) <= 0) return;
-    minutesInput.value = (parseInt(minutesInput.value) - 1).toString();
-    minutesInput.dispatchEvent(new Event("change"));
-});
-
-const minutesButtonWrapper = document.createElement("div");
-minutesButtonWrapper.className = "button-wrapper";
-minutesButtonWrapper.appendChild(incrementMinuteButton);
-minutesButtonWrapper.appendChild(decrementMinuteButton);
-
-const minutesWrapper = document.createElement("div");
-minutesWrapper.appendChild(minutesInput);
-minutesWrapper.appendChild(minutesDisplay);
-minutesWrapper.appendChild(minutesButtonWrapper);
-
-const secondsInput = document.createElement("input");
-secondsInput.type = "number";
-secondsInput.value = "0";
-secondsInput.min = "0";
-secondsInput.max = "59";
-
-const secondsDisplay = document.createElement("span");
-secondsDisplay.className = "time-display";
-secondsDisplay.innerText = secondsInput.value.padStart(2, "0");
-secondsInput.addEventListener("change", () => {
-    secondsDisplay.innerText = secondsInput.value.padStart(2, "0");
-});
-
-const incrementSecondButton = document.createElement("button");
-incrementSecondButton.innerText = "+";
-incrementSecondButton.addEventListener("click", () => {
-    if (parseInt(secondsInput.value) >= 59) return;
-    secondsInput.value = (parseInt(secondsInput.value) + 1).toString();
-    secondsInput.dispatchEvent(new Event("change"));
-});
-
-const decrementSecondButton = document.createElement("button");
-decrementSecondButton.innerText = "-";
-decrementSecondButton.addEventListener("click", () => {
-    if (parseInt(secondsInput.value) <= 0) return;
-    secondsInput.value = (parseInt(secondsInput.value) - 1).toString();
-    secondsInput.dispatchEvent(new Event("change"));
-});
-
-const secondsButtonWrapper = document.createElement("div");
-secondsButtonWrapper.className = "button-wrapper";
-secondsButtonWrapper.appendChild(incrementSecondButton);
-secondsButtonWrapper.appendChild(decrementSecondButton);
-
-const secondsWrapper = document.createElement("div");
-secondsWrapper.appendChild(secondsInput);
-secondsWrapper.appendChild(secondsDisplay);
-secondsWrapper.appendChild(secondsButtonWrapper);
+const { wrapper: minutesWrapper, input: minutesInput } = createTimeUnit();
+const { wrapper: secondsWrapper, input: secondsInput } = createTimeUnit();
 
 const timeWrapper = document.createElement("div");
 timeWrapper.className = "time-wrapper";
