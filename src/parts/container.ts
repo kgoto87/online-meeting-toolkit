@@ -54,4 +54,15 @@ function elementDrag(e: MouseEvent) {
     }
 }
 
+window.addEventListener("resize", () => {
+    if (container.offsetLeft + container.offsetWidth > window.innerWidth) {
+        container.style.left = "auto";
+        container.style.right = "0";
+    }
+    if (container.offsetTop + container.offsetHeight > window.innerHeight) {
+        container.style.top = "auto";
+        container.style.bottom = "0";
+    }
+});
+
 export default container;
