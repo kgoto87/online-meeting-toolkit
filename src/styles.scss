@@ -6,6 +6,7 @@
     cursor: grab;
     border-radius: 8px;
     overflow: hidden;
+    min-width: 164px;
 
     .timer {
         white-space: nowrap;
@@ -25,10 +26,16 @@
         .time-wrapper {
             padding: 0 0.3em;
             display: inline-block;
+            width: 100%;
+            text-align: center;
 
             & > div {
                 display: inline-block;
                 line-height: 1;
+            }
+
+            & > button {
+                width: 48px;
             }
 
             .time-display {
