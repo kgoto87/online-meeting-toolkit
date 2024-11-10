@@ -3,16 +3,17 @@
     "name": "Online Meeting Toolkit",
     "description": "Some handy tools for online meeting",
     "version": "0.1.0",
-    "content_scripts": [
-        {
-            "matches": [
-                "https://*.notion.so/*",
-                "https://docs.google.com/presentation/*"
-            ],
-            "js": ["index.js"],
-            "css": ["assets/index.css"]
-        }
+    "action": {
+        "default_title": "Online Meeting Toolkit"
+    },
+    "permissions": [
+        "storage",
+        "activeTab",
+        "scripting"
     ],
+    "background": {
+        "service_worker": "background.js"
+    },
     "web_accessible_resources": [
         {
             "resources": ["assets/musics/*.mp3"],

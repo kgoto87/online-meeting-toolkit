@@ -16,6 +16,7 @@ export default defineConfig((opt) => {
             rollupOptions: {
                 input: {
                     index: resolve(__dirname, "src/index.ts"),
+                    background: resolve(__dirname, "src/background.ts"),
                 },
                 output: {
                     entryFileNames: "[name].js",
