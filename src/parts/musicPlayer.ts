@@ -6,7 +6,7 @@ musicPlayer.className = "music-player";
 const music = document.createElement("audio");
 music.src = chrome.runtime.getURL(YugureAvenue);
 music.controls = true;
-music.autoplay = true;
+music.autoplay = false;
 music.loop = true;
 music.volume = 0.01;
 

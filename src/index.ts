@@ -3,7 +3,15 @@ import container from "./parts/container";
 import musicPlayer from "./parts/musicPlayer";
 import timer from "./parts/timer/timer";
 
-container.appendChild(timer);
-container.appendChild(musicPlayer);
+if (!(window as any)['onlineMeetingToolkitLoaded']) {
+    (window as any)['onlineMeetingToolkitLoaded'] = true;
+  
+    chrome.runtime.onMessage.addListener((message) => {
+      if (message.action === 'trigger') {
+        container.appendChild(timer);
+        container.appendChild(musicPlayer);
 
-document.body.appendChild(container);
+        document.body.appendChild(container);
+      }
+    });
+}

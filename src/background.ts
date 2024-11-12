@@ -1,15 +1,27 @@
 chrome.action.onClicked.addListener(async (tab) => {
     try {
-        await chrome.scripting.insertCSS({
+        const [{result}] = await chrome.scripting.executeScript({
             target: {tabId: tab.id!},
-            files: ['assets/index.css']
+            func: () => (window as any)['onlineMeetingToolkitLoaded']
         });
 
-        await chrome.scripting.executeScript({
-            target: {tabId: tab.id!},
-            files: ['index.js']
-        });
-    } catch (error) {
-        console.debug(error);
+        if (result) {
+            chrome.tabs.sendMessage(tab.id!, { action: 'trigger' });
+            return;
+          }
+    } catch {
+        // Script not loaded yet, proceed with injection
     }
-  });
+
+    await chrome.scripting.insertCSS({
+        target: {tabId: tab.id!},
+        files: ['assets/index.css']
+    });
+
+    await chrome.scripting.executeScript({
+        target: {tabId: tab.id!},
+        files: ['index.js']
+    });
+
+    chrome.tabs.sendMessage(tab.id!, { action: 'trigger' });
+});
