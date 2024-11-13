@@ -8,10 +8,15 @@ if (!(window as any)['onlineMeetingToolkitLoaded']) {
   
     chrome.runtime.onMessage.addListener((message) => {
       if (message.action === 'trigger') {
-        container.appendChild(timer);
-        container.appendChild(musicPlayer);
+        if (document.getElementById(container.id)) {
+            document.body.removeChild(container);
+        } else {
 
-        document.body.appendChild(container);
+            container.appendChild(timer);
+            container.appendChild(musicPlayer);
+
+            document.body.appendChild(container);
+        }
       }
     });
 }
