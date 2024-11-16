@@ -1,10 +1,7 @@
-import gong from "../../public/assets/musics/gong.mp3";
 import createPredefinedButton from "./predefinedButton";
+import { createStartButton } from "./startButton";
 import createTimeUnit from "./timeUnit";
-
-const se = document.createElement("audio");
-se.src = chrome.runtime.getURL(gong);
-se.volume = 0.02;
+import { state } from "../../state";
 
 const timer = document.createElement("div");
 timer.className = "timer";
@@ -20,47 +17,13 @@ timeWrapper.className = "time-wrapper";
 timeWrapper.appendChild(minutesWrapper);
 timeWrapper.appendChild(secondsWrapper);
 
-let interval: number;
-let isRunning = false;
-
-const startButton = document.createElement("button");
-startButton.innerText = "Start";
-startButton.addEventListener("click", () => {
-    isRunning ? stopTimer() : startTimer();
-});
-
-function startTimer() {
-    isRunning = true;
-    minutesInput.disabled = true;
-    secondsInput.disabled = true;
-    startButton.innerText = "Stop";
-    let time = parseInt(minutesInput.value) * 60 + parseInt(secondsInput.value);
-    interval = setInterval(() => {
-        time--;
-        minutesInput.value = Math.floor(time / 60).toString();
-        minutesInput.dispatchEvent(new Event("change"));
-        secondsInput.value = (time % 60).toString();
-        secondsInput.dispatchEvent(new Event("change"));
-        if (time <= 0) {
-            se.play();
-            stopTimer();
-        }
-    }, 1000);
-}
-
-function stopTimer() {
-    isRunning = false;
-    minutesInput.disabled = false;
-    secondsInput.disabled = false;
-    startButton.innerText = "Start";
-    clearInterval(interval);
-}
+const startButton = createStartButton(minutesInput, secondsInput);
 
 timeWrapper.appendChild(startButton);
 timer.appendChild(timeWrapper);
 
 function setTimer(min: number, sec: number) {
-    if (!isRunning) {
+    if (!state.isRunning) {
         minutesInput.value = min.toString();
         minutesInput.dispatchEvent(new Event("change"));
         secondsInput.value = sec.toString();

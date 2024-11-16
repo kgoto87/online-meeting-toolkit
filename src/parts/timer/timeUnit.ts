@@ -1,3 +1,5 @@
+import { state } from "../../state";
+
 export default function createTimeUnit() {
     const input = document.createElement("input");
     input.type = "number";
@@ -15,6 +17,7 @@ export default function createTimeUnit() {
     const incrementButton = document.createElement("button");
     incrementButton.innerText = "+";
     incrementButton.addEventListener("click", () => {
+        if (state.isRunning) return;
         if (parseInt(input.value) >= 59) return;
         input.value = (parseInt(input.value) + 1).toString();
         input.dispatchEvent(new Event("change"));
@@ -23,6 +26,7 @@ export default function createTimeUnit() {
     const decrementButton = document.createElement("button");
     decrementButton.innerText = "-";
     decrementButton.addEventListener("click", () => {
+        if (state.isRunning) return;
         if (parseInt(input.value) <= 0) return;
         input.value = (parseInt(input.value) - 1).toString();
         input.dispatchEvent(new Event("change"));
