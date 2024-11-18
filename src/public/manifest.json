@@ -16,7 +16,7 @@
     },
     "web_accessible_resources": [
         {
-            "resources": ["assets/musics/*.mp3"],
+            "resources": ["assets/musics/*.mp3", "assets/fonts/*.ttf"],
             "matches": ["<all_urls>"]
         }
     ]
