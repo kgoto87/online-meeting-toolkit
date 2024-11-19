@@ -1,6 +1,6 @@
 import createPredefinedButton from "./predefinedButton";
 import { createStartButton } from "./startButton";
-import createTimeUnit from "./timeUnit";
+import { TimeUnit } from "./timeUnit";
 import { state } from "../../state";
 
 const timer = document.createElement("div");
@@ -9,27 +9,25 @@ timer.addEventListener("mousedown", (e) => {
     e.stopPropagation();
 });
 
-const minutesTimeUnit = createTimeUnit();
-const minutesInput = minutesTimeUnit.querySelector("input")!;
-const secondsTimeUnit = createTimeUnit();
-const secondsInput = secondsTimeUnit.querySelector("input")!;
+const minutes = new TimeUnit();
+const seconds = new TimeUnit();
 
 const timeWrapper = document.createElement("div");
 timeWrapper.className = "time-wrapper";
-timeWrapper.appendChild(minutesTimeUnit);
-timeWrapper.appendChild(secondsTimeUnit);
+timeWrapper.appendChild(minutes.wrapper);
+timeWrapper.appendChild(seconds.wrapper);
 
-const startButton = createStartButton(minutesInput, secondsInput);
+const startButton = createStartButton(minutes.input, seconds.input);
 
 timeWrapper.appendChild(startButton);
 timer.appendChild(timeWrapper);
 
 function setTimer(min: number, sec: number) {
     if (!state.isRunning) {
-        minutesInput.value = min.toString();
-        minutesInput.dispatchEvent(new Event("change"));
-        secondsInput.value = sec.toString();
-        secondsInput.dispatchEvent(new Event("change"));
+        minutes.input.value = min.toString();
+        minutes.input.dispatchEvent(new Event("change"));
+        seconds.input.value = sec.toString();
+        seconds.input.dispatchEvent(new Event("change"));
     }
 }
 

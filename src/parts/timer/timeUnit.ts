@@ -1,50 +1,78 @@
 import { state } from "../../state";
 
-const min = 0;
-const max = 59;
-const step = 1;
+export class TimeUnit {
+    min = 0;
+    max = 59;
+    step = 1;
 
-export default function createTimeUnit() {
-    const input = document.createElement("input");
-    input.type = "number";
-    input.value = "0";
-    input.min = min.toString();
-    input.max = max.toString();
+    readonly wrapper: HTMLDivElement;
+    readonly input: HTMLInputElement;
 
-    const display = document.createElement("span");
-    display.className = "time-display";
-    display.innerText = input.value.padStart(2, "0");
-    input.addEventListener("change", () => {
-        display.innerText = input.value.padStart(2, "0");
-    });
+    constructor() {
+        this.input = this.makeInput();
 
-    const incrementButton = document.createElement("button");
-    incrementButton.innerText = "+";
-    incrementButton.addEventListener("click", () => {
-        if (state.isRunning) return;
-        if (parseInt(input.value) >= max) return;
-        input.value = (parseInt(input.value) + step).toString();
-        input.dispatchEvent(new Event("change"));
-    });
+        const display = this.makeDisplay();
 
-    const decrementButton = document.createElement("button");
-    decrementButton.innerText = "-";
-    decrementButton.addEventListener("click", () => {
-        if (state.isRunning) return;
-        if (parseInt(input.value) <= min) return;
-        input.value = (parseInt(input.value) - step).toString();
-        input.dispatchEvent(new Event("change"));
-    });
+        this.input.addEventListener("change", () => {
+            display.innerText = this.input.value.padStart(2, "0");
+        });
 
-    const buttonWrapper = document.createElement("div");
-    buttonWrapper.className = "button-wrapper";
-    buttonWrapper.appendChild(incrementButton);
-    buttonWrapper.appendChild(decrementButton);
+        const buttonWrapper = document.createElement("div");
+        buttonWrapper.className = "button-wrapper";
+        buttonWrapper.appendChild(this.makeIncrementButton());
+        buttonWrapper.appendChild(this.makeDecrementButton());
 
-    const wrapper = document.createElement("div");
-    wrapper.appendChild(input);
-    wrapper.appendChild(display);
-    wrapper.appendChild(buttonWrapper);
+        const wrapper = document.createElement("div");
+        wrapper.appendChild(this.input);
+        wrapper.appendChild(display);
+        wrapper.appendChild(buttonWrapper);
+        this.wrapper = wrapper;
+    }
 
-    return wrapper;
+    private makeInput() {
+        const input = document.createElement("input");
+        input.type = "number";
+        input.value = "0";
+        input.min = this.min.toString();
+        input.max = this.max.toString();
+        return input;
+    }
+
+    private makeDisplay() {
+        const display = document.createElement("span");
+        display.className = "time-display";
+        display.innerText = this.input.value.padStart(2, "0");
+        this.input.addEventListener("change", () => {
+            display.innerText = this.input.value.padStart(2, "0");
+        });
+        return display;
+    }
+
+    private makeIncrementButton() {
+        const incrementButton = document.createElement("button");
+        incrementButton.innerText = "+";
+        incrementButton.addEventListener("click", () => {
+            if (state.isRunning) return;
+            if (parseInt(this.input.value) >= this.max) return;
+            this.input.value = (
+                parseInt(this.input.value) + this.step
+            ).toString();
+            this.input.dispatchEvent(new Event("change"));
+        });
+        return incrementButton;
+    }
+
+    private makeDecrementButton() {
+        const decrementButton = document.createElement("button");
+        decrementButton.innerText = "-";
+        decrementButton.addEventListener("click", () => {
+            if (state.isRunning) return;
+            if (parseInt(this.input.value) <= this.min) return;
+            this.input.value = (
+                parseInt(this.input.value) - this.step
+            ).toString();
+            this.input.dispatchEvent(new Event("change"));
+        });
+        return decrementButton;
+    }
 }
