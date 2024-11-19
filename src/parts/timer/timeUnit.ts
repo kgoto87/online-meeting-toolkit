@@ -1,11 +1,15 @@
 import { state } from "../../state";
 
+const min = 0;
+const max = 59;
+const step = 1;
+
 export default function createTimeUnit() {
     const input = document.createElement("input");
     input.type = "number";
     input.value = "0";
-    input.min = "0";
-    input.max = "59";
+    input.min = min.toString();
+    input.max = max.toString();
 
     const display = document.createElement("span");
     display.className = "time-display";
@@ -18,8 +22,8 @@ export default function createTimeUnit() {
     incrementButton.innerText = "+";
     incrementButton.addEventListener("click", () => {
         if (state.isRunning) return;
-        if (parseInt(input.value) >= 59) return;
-        input.value = (parseInt(input.value) + 1).toString();
+        if (parseInt(input.value) >= max) return;
+        input.value = (parseInt(input.value) + step).toString();
         input.dispatchEvent(new Event("change"));
     });
 
@@ -27,8 +31,8 @@ export default function createTimeUnit() {
     decrementButton.innerText = "-";
     decrementButton.addEventListener("click", () => {
         if (state.isRunning) return;
-        if (parseInt(input.value) <= 0) return;
-        input.value = (parseInt(input.value) - 1).toString();
+        if (parseInt(input.value) <= min) return;
+        input.value = (parseInt(input.value) - step).toString();
         input.dispatchEvent(new Event("change"));
     });
 
@@ -42,5 +46,5 @@ export default function createTimeUnit() {
     wrapper.appendChild(display);
     wrapper.appendChild(buttonWrapper);
 
-    return { wrapper, input };
+    return wrapper;
 }

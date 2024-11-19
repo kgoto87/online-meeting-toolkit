@@ -9,13 +9,15 @@ timer.addEventListener("mousedown", (e) => {
     e.stopPropagation();
 });
 
-const { wrapper: minutesWrapper, input: minutesInput } = createTimeUnit();
-const { wrapper: secondsWrapper, input: secondsInput } = createTimeUnit();
+const minutesTimeUnit = createTimeUnit();
+const minutesInput = minutesTimeUnit.querySelector("input")!;
+const secondsTimeUnit = createTimeUnit();
+const secondsInput = secondsTimeUnit.querySelector("input")!;
 
 const timeWrapper = document.createElement("div");
 timeWrapper.className = "time-wrapper";
-timeWrapper.appendChild(minutesWrapper);
-timeWrapper.appendChild(secondsWrapper);
+timeWrapper.appendChild(minutesTimeUnit);
+timeWrapper.appendChild(secondsTimeUnit);
 
 const startButton = createStartButton(minutesInput, secondsInput);
 
