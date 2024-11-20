@@ -23,12 +23,14 @@ timeWrapper.appendChild(startButton);
 timer.appendChild(timeWrapper);
 
 function setTimer(min: number, sec: number) {
-    if (!state.isRunning) {
-        minutes.input.value = min.toString();
-        minutes.input.dispatchEvent(new Event("change"));
-        seconds.input.value = sec.toString();
-        seconds.input.dispatchEvent(new Event("change"));
+    if (state.isRunning) {
+        return;
     }
+
+    minutes.input.value = min.toString();
+    minutes.input.dispatchEvent(new Event("change"));
+    seconds.input.value = sec.toString();
+    seconds.input.dispatchEvent(new Event("change"));
 }
 
 const oneMunitueButton = createPredefinedButton(1, 0, () => setTimer(1, 0));
