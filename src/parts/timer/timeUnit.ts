@@ -42,9 +42,6 @@ export class TimeUnit {
         const display = document.createElement("span");
         display.className = "time-display";
         display.innerText = this.input.value.padStart(2, "0");
-        this.input.addEventListener("change", () => {
-            display.innerText = this.input.value.padStart(2, "0");
-        });
         return display;
     }
 
