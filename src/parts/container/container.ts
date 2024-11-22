@@ -1,5 +1,5 @@
-import { MouseEvents } from "./events/mouse";
-import { WindowEvents } from "./events/window";
+import { MouseEvents } from "./events/mouseEvents";
+import { WindowEvents } from "./events/windowEvents";
 
 const container = document.createElement("div");
 container.id = "online-meeting-toolkit";
