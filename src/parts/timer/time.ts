@@ -1,6 +1,6 @@
 import { state } from "../../state";
 import { createStartButton } from "./startButton";
-import { TimeUnit } from "./timeUnit";
+import { TimeUnit } from "./timeUnit/timeUnit";
 
 export class Time {
     readonly minutes: TimeUnit;
