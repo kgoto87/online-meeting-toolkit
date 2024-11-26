@@ -10,19 +10,20 @@ export class TimeUnit {
 
     readonly wrapper: HTMLDivElement;
     readonly input: HTMLInputElement;
+    readonly display: HTMLSpanElement;
 
     constructor() {
         this.input = this.makeInput();
 
-        const display = this.makeDisplay();
+        this.display = this.makeDisplay();
 
         this.input.addEventListener("change", () => {
-            display.innerText = this.input.value.padStart(2, "0");
+            this.display.innerText = this.input.value.padStart(2, "0");
         });
 
         const wrapper = document.createElement("div");
         wrapper.appendChild(this.input);
-        wrapper.appendChild(display);
+        wrapper.appendChild(this.display);
         wrapper.appendChild(makeButtonContainer(this.input, this.params));
         this.wrapper = wrapper;
     }
