@@ -19,6 +19,10 @@
     overflow: hidden;
     min-width: 164px;
 
+    &.dragging {
+        cursor: grabbing;
+    }
+
     .timer {
         white-space: nowrap;
         font-size: 18px;

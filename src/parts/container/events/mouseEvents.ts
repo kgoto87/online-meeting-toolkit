@@ -15,13 +15,13 @@ export class MouseEvents {
         this.y = e.clientY;
         document.addEventListener("mouseup", this.onMouseUp);
         document.addEventListener("mousemove", this.onMouseMove);
-        this.target.style.cursor = "grabbing";
+        this.target.classList.add("dragging");
     }
 
     private closeDragElement() {
         document.removeEventListener("mouseup", this.onMouseUp);
         document.removeEventListener("mousemove", this.onMouseMove);
-        this.target.style.cursor = "";
+        this.target.classList.remove("dragging");
     }
 
     private elementDrag(e: MouseEvent) {
