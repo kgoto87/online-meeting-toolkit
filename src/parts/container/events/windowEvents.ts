@@ -2,7 +2,7 @@ export class WindowEvents {
     constructor(private target: HTMLElement) {
         window.addEventListener("resize", () => {
             const { isWidthOverflown, isHeightOverflown } =
-                this.calculatePosition();
+                this.evaluateTargetPosition();
             if (isWidthOverflown) {
                 this.target.style.left = "auto";
                 this.target.style.right = "0";
@@ -14,7 +14,7 @@ export class WindowEvents {
         });
     }
 
-    private calculatePosition() {
+    private evaluateTargetPosition() {
         const isWidthOverflown =
             this.target.offsetLeft + this.target.offsetWidth >
             window.innerWidth;
