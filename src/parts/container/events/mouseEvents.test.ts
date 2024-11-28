@@ -7,7 +7,6 @@ beforeEach(function () {
     window = Object.assign(window, { innerWidth: 100 });
     mockTarget = document.createElement("div");
     new MouseEvents(mockTarget);
-    document.dispatchEvent(new MouseEvent("mouseup"));
 });
 
 test("should add 'dragging' class when mouse down", function () {
