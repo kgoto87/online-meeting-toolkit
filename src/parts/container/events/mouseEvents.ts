@@ -1,3 +1,5 @@
+import { evaluateOverflows } from "./positionEvaluator";
+
 export class MouseEvents {
     private x = 0;
     private y = 0;
@@ -41,7 +43,7 @@ export class MouseEvents {
             isTopOverflown,
             isRightOverflown,
             isBottomOverflown,
-        } = this.evaluateTargetPosition();
+        } = evaluateOverflows(this.target);
 
         if (isLeftOverflown) {
             this.target.style.left = "0";
@@ -59,22 +61,5 @@ export class MouseEvents {
             this.target.style.top = "auto";
             this.target.style.bottom = "0";
         }
-    }
-
-    private evaluateTargetPosition() {
-        const isLeftOverflown = this.target.offsetLeft < 0;
-        const isTopOverflown = this.target.offsetTop < 0;
-        const isRightOverflown =
-            this.target.offsetLeft + this.target.offsetWidth >
-            window.innerWidth;
-        const isBottomOverflown =
-            this.target.offsetTop + this.target.offsetHeight >
-            window.innerHeight;
-        return {
-            isLeftOverflown,
-            isTopOverflown,
-            isRightOverflown,
-            isBottomOverflown,
-        };
     }
 }
