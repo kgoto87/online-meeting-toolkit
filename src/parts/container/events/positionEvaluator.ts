@@ -15,7 +15,6 @@ export function evaluateOverflows(target: HTMLElement): overflows {
 }
 
 export function isLeftOverflown(target: HTMLElement): boolean {
-    console.log(target.offsetLeft);
     return target.offsetLeft < 0;
 }
 
