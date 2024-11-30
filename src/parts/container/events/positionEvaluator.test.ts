@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, test } from "vitest";
 import {
-    evaluateOverflows,
     isBottomOverflown,
     isLeftOverflown,
     isRightOverflown,
