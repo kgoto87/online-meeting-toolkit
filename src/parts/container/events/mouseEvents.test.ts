@@ -1,9 +1,15 @@
-import { beforeEach, expect, test } from "vitest";
+import { beforeEach, expect, test, vi } from "vitest";
 import { MouseEvents } from "./mouseEvents";
+import { evaluateOverflows } from "./positionEvaluator";
 
 let mockTarget: HTMLElement;
 
+vi.mock("./positionEvaluator", () => ({
+    evaluateOverflows: vi.fn(),
+}));
+
 beforeEach(function () {
+    vi.clearAllMocks();
     window = Object.assign(window, { innerWidth: 100 });
     mockTarget = document.createElement("div");
     new MouseEvents(mockTarget);
@@ -21,6 +27,12 @@ test("should remove 'dragging' class when mouse up", function () {
 });
 
 test("should move target when dragging", function () {
+    vi.mocked(evaluateOverflows).mockReturnValue({
+        isLeftOverflown: false,
+        isTopOverflown: false,
+        isRightOverflown: false,
+        isBottomOverflown: false,
+    });
     mockTarget.dispatchEvent(
         new MouseEvent("mousedown", { clientX: 0, clientY: 0 })
     );
@@ -32,6 +44,12 @@ test("should move target when dragging", function () {
 });
 
 test("should not move target when not dragging", function () {
+    vi.mocked(evaluateOverflows).mockReturnValue({
+        isLeftOverflown: false,
+        isTopOverflown: false,
+        isRightOverflown: false,
+        isBottomOverflown: false,
+    });
     mockTarget.dispatchEvent(
         new MouseEvent("mousedown", { clientX: 0, clientY: 0 })
     );
@@ -47,25 +65,26 @@ test("should not move target when not dragging", function () {
 });
 
 test("should stop at left edge", function () {
-    mockTarget.dispatchEvent(
-        new MouseEvent("mousedown", { clientX: 0, clientY: 0 })
-    );
-    // do not really want to simulate the offsetLeft in this way but nothing else worked
-    Object.defineProperty(mockTarget, "offsetLeft", { get: () => -10 });
-    document.dispatchEvent(
-        new MouseEvent("mousemove", { clientX: -10, clientY: 0 })
-    );
+    vi.mocked(evaluateOverflows).mockReturnValue({
+        isLeftOverflown: true,
+        isTopOverflown: false,
+        isRightOverflown: false,
+        isBottomOverflown: false,
+    });
+    mockTarget.dispatchEvent(new MouseEvent("mousedown"));
+    document.dispatchEvent(new MouseEvent("mousemove"));
     expect(mockTarget.style.left).toBe("0px");
 });
 
 test("should stop at top edge", function () {
-    mockTarget.dispatchEvent(
-        new MouseEvent("mousedown", { clientX: 0, clientY: 0 })
-    );
-    Object.defineProperty(mockTarget, "offsetTop", { get: () => -10 });
-    document.dispatchEvent(
-        new MouseEvent("mousemove", { clientX: 0, clientY: -10 })
-    );
+    vi.mocked(evaluateOverflows).mockReturnValue({
+        isLeftOverflown: false,
+        isTopOverflown: true,
+        isRightOverflown: false,
+        isBottomOverflown: false,
+    });
+    mockTarget.dispatchEvent(new MouseEvent("mousedown"));
+    document.dispatchEvent(new MouseEvent("mousemove"));
     expect(mockTarget.style.top).toBe("0px");
 });
 
