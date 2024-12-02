@@ -1,16 +1,12 @@
-import gong from "../../public/assets/musics/gong.mp3";
 import { state, setIsRunning } from "../../state";
+import se from "./soundEffect";
 
-const se = document.createElement("audio");
-se.src = chrome.runtime.getURL(gong);
-se.volume = 0.02;
+let interval: number;
 
 export function createStartButton(
     minutesInput: HTMLInputElement,
     secondsInput: HTMLInputElement
 ) {
-    let interval: number;
-
     const startButton = document.createElement("button");
     startButton.innerText = "Start";
     startButton.addEventListener("click", () => {
@@ -22,8 +18,9 @@ export function createStartButton(
         minutesInput.disabled = true;
         secondsInput.disabled = true;
         startButton.innerText = "Stop";
-        let time =
-            parseInt(minutesInput.value) * 60 + parseInt(secondsInput.value);
+        const minutes = parseInt(minutesInput.value) * 60;
+        const seconds = parseInt(secondsInput.value);
+        let time = minutes + seconds;
         interval = setInterval(() => {
             time--;
             minutesInput.value = Math.floor(time / 60).toString();
