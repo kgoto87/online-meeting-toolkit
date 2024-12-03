@@ -19,5 +19,6 @@
             "resources": ["assets/musics/*.mp3", "assets/fonts/*.ttf"],
             "matches": ["<all_urls>"]
         }
-    ]
+    ],
+    "options_page": "options.html"
 }

@@ -17,6 +17,7 @@ export default defineConfig((opt) => {
                 input: {
                     index: resolve(__dirname, "src/index.ts"),
                     background: resolve(__dirname, "src/background.ts"),
+                    options: resolve(__dirname, "src/options.ts"),
                 },
                 output: {
                     entryFileNames: "[name].js",
