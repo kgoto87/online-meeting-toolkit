@@ -1,7 +1,6 @@
 import { state, setIsRunning } from "../../state";
 import se from "./soundEffect";
-
-let interval: number;
+import { interval } from "./timerConfig";
 
 export function createStartButton(
     minutesInput: HTMLInputElement,
@@ -13,6 +12,8 @@ export function createStartButton(
         state.isRunning ? stopTimer() : startTimer();
     });
 
+    let timerInterval: number;
+
     function startTimer() {
         setIsRunning(true);
         minutesInput.disabled = true;
@@ -21,7 +22,7 @@ export function createStartButton(
         const minutes = parseInt(minutesInput.value) * 60;
         const seconds = parseInt(secondsInput.value);
         let time = minutes + seconds;
-        interval = setInterval(() => {
+        timerInterval = setInterval(() => {
             time--;
             minutesInput.value = Math.floor(time / 60).toString();
             minutesInput.dispatchEvent(new Event("change"));
@@ -31,7 +32,7 @@ export function createStartButton(
                 se.play();
                 stopTimer();
             }
-        }, 1000);
+        }, interval);
     }
 
     function stopTimer() {
@@ -39,7 +40,7 @@ export function createStartButton(
         minutesInput.disabled = false;
         secondsInput.disabled = false;
         startButton.innerText = "Start";
-        clearInterval(interval);
+        clearInterval(timerInterval);
     }
 
     return startButton;
