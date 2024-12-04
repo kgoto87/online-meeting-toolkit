@@ -3,7 +3,8 @@ const saveButton = document.getElementById("save") as HTMLButtonElement;
 const message = document.createElement("p");
 message.id = "message";
 
-const saveOptions = () => {
+const saveOptions = (e: MouseEvent) => {
+    e.preventDefault();
     chrome.storage.sync.set({ alwaysOn: alwaysOnInput }, () => {
         message.textContent = "Options saved.";
         setTimeout(() => {
