@@ -5,7 +5,7 @@ message.id = "message";
 
 const saveOptions = (e: MouseEvent) => {
     e.preventDefault();
-    chrome.storage.sync.set({ alwaysOn: alwaysOnInput }, () => {
+    chrome.storage.sync.set({ alwaysOn: alwaysOnInput.checked }, () => {
         message.textContent = "Options saved.";
         setTimeout(() => {
             message.textContent = "";
