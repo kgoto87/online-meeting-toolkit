@@ -1,11 +1,11 @@
-const alwaysOnInput = document.getElementById("always-on") as HTMLInputElement;
+const onNewTabInput = document.getElementById("on-new-tab") as HTMLInputElement;
 const saveButton = document.getElementById("save") as HTMLButtonElement;
 const message = document.createElement("p");
 message.id = "message";
 
 const saveOptions = (e: MouseEvent) => {
     e.preventDefault();
-    chrome.storage.sync.set({ alwaysOn: alwaysOnInput.checked }, () => {
+    chrome.storage.sync.set({ onNewTab: onNewTabInput.checked }, () => {
         message.textContent = "Options saved.";
         setTimeout(() => {
             message.textContent = "";
@@ -15,8 +15,8 @@ const saveOptions = (e: MouseEvent) => {
 };
 
 const restoreOptions = () => {
-    chrome.storage.sync.get({ alwaysOn: false }, (items) => {
-        alwaysOnInput.checked = items.alwaysOn;
+    chrome.storage.sync.get({ onNewTab: false }, (items) => {
+        onNewTabInput.checked = items.onNewTab;
     });
 };
 
