@@ -1,4 +1,4 @@
-import { expect, test, vi } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { createStartButton } from "./startButton";
 import { setInitialTime, setIsPaused, setIsRunning } from "../../state";
 import se from "./soundEffect";
@@ -33,7 +33,7 @@ vi.mock("./timerConfig", () => ({
     interval: 10,
 }));
 
-test("should start when not running", async function () {
+describe("startButton", function () {
     mockState.isRunning = false;
     mockState.isPaused = false;
     mockState.initialTime = {
@@ -50,42 +50,52 @@ test("should start when not running", async function () {
 
     button.click();
 
-    expect(vi.mocked(setIsRunning)).toBeCalledWith(true);
-    expect(vi.mocked(setInitialTime)).toBeCalledWith(1, 0);
-    expect(mockMinutes.disabled).toBeTruthy();
-    expect(mockSeconds.disabled).toBeTruthy();
-    expect(button.innerText).toBe("Stop");
-    await vi.waitFor(
-        function () {
-            expect(mockMinutes.value).toBe("0");
-            expect(mockSeconds.value).toBe("0");
-        },
-        { timeout: 660, interval: 10 }
-    );
-    expect(vi.mocked(se.play)).toBeCalled();
-    expect(vi.mocked(setIsRunning)).toBeCalledWith(false);
-    await vi.waitFor(
-        function () {
-            expect(mockMinutes.value).toBe("1");
-            expect(mockSeconds.value).toBe("0");
-        },
-        { timeout: 110, interval: 10 }
-    );
+    test("should start when not running", async function () {
+        expect(vi.mocked(setIsRunning)).toBeCalledWith(true);
+        expect(vi.mocked(setInitialTime)).toBeCalledWith(1, 0);
+        expect(mockMinutes.disabled).toBeTruthy();
+        expect(mockSeconds.disabled).toBeTruthy();
+        expect(button.innerText).toBe("Stop");
+    });
+
+    test("should count down to zero", async function () {
+        await vi.waitFor(
+            function () {
+                expect(mockMinutes.value).toBe("0");
+                expect(mockSeconds.value).toBe("0");
+            },
+            { timeout: 660, interval: 10 }
+        );
+        expect(vi.mocked(se.play)).toBeCalled();
+        expect(vi.mocked(setIsRunning)).toBeCalledWith(false);
+    });
+
+    test("should reset the timer to its initial time when finished", async function () {
+        await vi.waitFor(
+            function () {
+                expect(mockMinutes.value).toBe("1");
+                expect(mockSeconds.value).toBe("0");
+            },
+            { timeout: 100, interval: 10 }
+        );
+    });
 });
 
-test("should pause when running", function () {
-    mockState.isRunning = true;
+describe("startButton", function () {
+    test("should pause when running", function () {
+        mockState.isRunning = true;
 
-    const mockMinutes = document.createElement("input");
-    const mockSeconds = document.createElement("input");
+        const mockMinutes = document.createElement("input");
+        const mockSeconds = document.createElement("input");
 
-    const button = createStartButton(mockMinutes, mockSeconds);
+        const button = createStartButton(mockMinutes, mockSeconds);
 
-    button.click();
+        button.click();
 
-    expect(vi.mocked(setIsRunning)).toBeCalledWith(false);
-    expect(vi.mocked(setIsPaused)).toBeCalledWith(true);
-    expect(mockMinutes.disabled).toBeFalsy();
-    expect(mockSeconds.disabled).toBeFalsy();
-    expect(button.innerText).toBe("Start");
+        expect(vi.mocked(setIsRunning)).toBeCalledWith(false);
+        expect(vi.mocked(setIsPaused)).toBeCalledWith(true);
+        expect(mockMinutes.disabled).toBeFalsy();
+        expect(mockSeconds.disabled).toBeFalsy();
+        expect(button.innerText).toBe("Start");
+    });
 });
