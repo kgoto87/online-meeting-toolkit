@@ -1,4 +1,4 @@
-import { state, setIsRunning } from "../../state";
+import { state, setIsRunning, setIsPaused, setInitialTime } from "../../state";
 import se from "./soundEffect";
 import { interval } from "./timerConfig";
 
@@ -9,30 +9,50 @@ export function createStartButton(
     const startButton = document.createElement("button");
     startButton.innerText = "Start";
     startButton.addEventListener("click", () => {
-        state.isRunning ? stopTimer() : startTimer();
+        state.isRunning ? pauseTimer() : startTimer();
     });
 
     let timerInterval: number;
 
     function startTimer() {
         setIsRunning(true);
+
         minutesInput.disabled = true;
         secondsInput.disabled = true;
         startButton.innerText = "Stop";
-        const minutes = parseInt(minutesInput.value) * 60;
+        const minutes = parseInt(minutesInput.value);
         const seconds = parseInt(secondsInput.value);
-        let time = minutes + seconds;
+        if (!state.isPaused) {
+            setInitialTime(minutes, seconds);
+        }
+        let time = minutes * 60 + seconds;
         timerInterval = setInterval(() => {
-            time--;
-            minutesInput.value = Math.floor(time / 60).toString();
-            minutesInput.dispatchEvent(new Event("change"));
-            secondsInput.value = (time % 60).toString();
-            secondsInput.dispatchEvent(new Event("change"));
+            time = countDown(time);
             if (time <= 0) {
                 se.play();
                 stopTimer();
+                setTimeout(() => {
+                    minutesInput.value = state.initialTime.minutes.toString();
+                    minutesInput.dispatchEvent(new Event("change"));
+                    secondsInput.value = state.initialTime.seconds.toString();
+                    secondsInput.dispatchEvent(new Event("change"));
+                }, interval);
             }
         }, interval);
+    }
+
+    function countDown(time: number): number {
+        time--;
+        minutesInput.value = Math.floor(time / 60).toString();
+        minutesInput.dispatchEvent(new Event("change"));
+        secondsInput.value = (time % 60).toString();
+        secondsInput.dispatchEvent(new Event("change"));
+        return time;
+    }
+
+    function pauseTimer() {
+        setIsPaused(true);
+        stopTimer();
     }
 
     function stopTimer() {

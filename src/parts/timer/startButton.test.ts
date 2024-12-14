@@ -1,12 +1,17 @@
 import { expect, test, vi } from "vitest";
 import { createStartButton } from "./startButton";
-import { setIsRunning } from "../../state";
+import { setInitialTime, setIsPaused, setIsRunning } from "../../state";
 import se from "./soundEffect";
 
 const { mockState } = vi.hoisted(() => {
     return {
         mockState: {
             isRunning: false,
+            initialTime: {
+                minutes: 0,
+                seconds: 0,
+            },
+            isPaused: false,
         },
     };
 });
@@ -14,6 +19,8 @@ const { mockState } = vi.hoisted(() => {
 vi.mock("../../state", () => ({
     state: mockState,
     setIsRunning: vi.fn(),
+    setIsPaused: vi.fn(),
+    setInitialTime: vi.fn(),
 }));
 
 vi.mock("./soundEffect", () => ({
@@ -28,6 +35,11 @@ vi.mock("./timerConfig", () => ({
 
 test("should start when not running", async function () {
     mockState.isRunning = false;
+    mockState.isPaused = false;
+    mockState.initialTime = {
+        minutes: 1,
+        seconds: 0,
+    };
 
     const mockMinutes = document.createElement("input");
     mockMinutes.value = "1";
@@ -39,6 +51,7 @@ test("should start when not running", async function () {
     button.click();
 
     expect(vi.mocked(setIsRunning)).toBeCalledWith(true);
+    expect(vi.mocked(setInitialTime)).toBeCalledWith(1, 0);
     expect(mockMinutes.disabled).toBeTruthy();
     expect(mockSeconds.disabled).toBeTruthy();
     expect(button.innerText).toBe("Stop");
@@ -51,9 +64,16 @@ test("should start when not running", async function () {
     );
     expect(vi.mocked(se.play)).toBeCalled();
     expect(vi.mocked(setIsRunning)).toBeCalledWith(false);
+    await vi.waitFor(
+        function () {
+            expect(mockMinutes.value).toBe("1");
+            expect(mockSeconds.value).toBe("0");
+        },
+        { timeout: 110, interval: 10 }
+    );
 });
 
-test("should stop when running", function () {
+test("should pause when running", function () {
     mockState.isRunning = true;
 
     const mockMinutes = document.createElement("input");
@@ -64,6 +84,7 @@ test("should stop when running", function () {
     button.click();
 
     expect(vi.mocked(setIsRunning)).toBeCalledWith(false);
+    expect(vi.mocked(setIsPaused)).toBeCalledWith(true);
     expect(mockMinutes.disabled).toBeFalsy();
     expect(mockSeconds.disabled).toBeFalsy();
     expect(button.innerText).toBe("Start");
