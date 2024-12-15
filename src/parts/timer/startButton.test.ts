@@ -16,10 +16,6 @@ vi.mock("./timerConfig", () => ({
 describe("startButton", function () {
     state.isRunning = false;
     state.isPaused = false;
-    state.initialTime = {
-        minutes: 1,
-        seconds: 0,
-    };
 
     const mockMinutes = document.createElement("input");
     mockMinutes.value = "1";
