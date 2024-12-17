@@ -47,6 +47,11 @@ describe("makeIncrementButton", () => {
         });
 
         test("increment the value", () => {
+            let eventDispatched = false;
+            document.addEventListener(
+                "change-time",
+                () => (eventDispatched = true)
+            );
             mockState.isRunning = false;
             const mockInput = document.createElement("input");
             const mockParams = { min: 0, max: 10, step: 1 };
@@ -54,6 +59,7 @@ describe("makeIncrementButton", () => {
             const incrementButton = makeIncrementButton(mockInput, mockParams);
             incrementButton.click();
             expect(mockInput.value).toBe("6");
+            expect(eventDispatched).toBeTruthy();
         });
     });
 });

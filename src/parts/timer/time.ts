@@ -1,4 +1,4 @@
-import { state } from "../../state";
+import { setInitialTime, state } from "../../state";
 import { createStartButton } from "./startButton";
 import { TimeUnit } from "./timeUnit/timeUnit";
 
@@ -10,6 +10,13 @@ export class Time {
     constructor() {
         this.minutes = new TimeUnit();
         this.seconds = new TimeUnit();
+
+        document.addEventListener("change-time", () =>
+            setInitialTime(
+                parseInt(this.minutes.input.value),
+                parseInt(this.seconds.input.value)
+            )
+        );
 
         this.wrapper = document.createElement("div");
         this.wrapper.className = "time-wrapper";
@@ -30,5 +37,7 @@ export class Time {
         this.minutes.input.dispatchEvent(new Event("change"));
         this.seconds.input.value = sec.toString();
         this.seconds.input.dispatchEvent(new Event("change"));
+
+        document.dispatchEvent(new Event("change-time"));
     }
 }

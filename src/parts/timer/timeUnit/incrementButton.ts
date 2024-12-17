@@ -12,6 +12,7 @@ export function makeIncrementButton(
         if (parseInt(input.value) >= params.max) return;
         input.value = (parseInt(input.value) + params.step).toString();
         input.dispatchEvent(new Event("change"));
+        document.dispatchEvent(new Event("change-time"));
     });
     return incrementButton;
 }

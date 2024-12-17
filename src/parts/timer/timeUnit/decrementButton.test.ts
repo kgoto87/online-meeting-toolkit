@@ -47,6 +47,12 @@ describe("makeDecrementButton", () => {
         });
 
         test("decrement the value", () => {
+            let eventDispatched = false;
+            document.addEventListener(
+                "change-time",
+                () => (eventDispatched = true)
+            );
+
             mockState.isRunning = false;
             const mockInput = document.createElement("input");
             const mockParams = { min: 0, max: 10, step: 1 };
@@ -54,6 +60,7 @@ describe("makeDecrementButton", () => {
             const decrementButton = makeDecrementButton(mockInput, mockParams);
             decrementButton.click();
             expect(mockInput.value).toBe("4");
+            expect(eventDispatched).toBeTruthy();
         });
     });
 });
