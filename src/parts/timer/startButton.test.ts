@@ -13,7 +13,7 @@ vi.mock("./timerConfig", () => ({
     interval: 10,
 }));
 
-describe("startButton", function () {
+describe("a stopped startButton", function () {
     state.isRunning = false;
     state.isPaused = false;
 
@@ -26,7 +26,7 @@ describe("startButton", function () {
 
     button.click();
 
-    test("should start when not running", async function () {
+    test("should start", async function () {
         expect(state.isRunning).toBeTruthy();
         expect(state.initialTime).toEqual({ minutes: 1, seconds: 0 });
         expect(mockMinutes.disabled).toBeTruthy();
@@ -57,14 +57,18 @@ describe("startButton", function () {
     });
 });
 
-describe("startButton", function () {
-    test("should pause when running", function () {
+describe("a running startButton", function () {
+    const mockMinutes = document.createElement("input");
+    mockMinutes.value = "1";
+    const mockSeconds = document.createElement("input");
+    mockSeconds.value = "0";
+
+    state.initialTime = { minutes: 1, seconds: 0 };
+
+    const button = createStartButton(mockMinutes, mockSeconds);
+
+    test("should pause", function () {
         state.isRunning = true;
-
-        const mockMinutes = document.createElement("input");
-        const mockSeconds = document.createElement("input");
-
-        const button = createStartButton(mockMinutes, mockSeconds);
 
         button.click();
 
