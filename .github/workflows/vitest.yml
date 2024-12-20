@@ -21,4 +21,4 @@ jobs:
                   npm install
 
             - name: Test
-              run: vitest run
+              run: npm run test-once

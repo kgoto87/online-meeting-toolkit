@@ -6,6 +6,7 @@
     "type": "module",
     "scripts": {
         "test": "vitest",
+        "test-once": "vitest run",
         "build": "tsc && vite build --emptyOutDir"
     },
     "author": "",
