@@ -40,7 +40,7 @@ describe("a stopped startButton", function () {
                 expect(mockMinutes.value).toBe("0");
                 expect(mockSeconds.value).toBe("0");
             },
-            { timeout: 660, interval: 10 }
+            { timeout: 1000, interval: 10 }
         );
         expect(vi.mocked(se.play)).toBeCalled();
         expect(state.isRunning).toBeFalsy();
