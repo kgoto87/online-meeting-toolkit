@@ -51,7 +51,10 @@ async function executeOnNewTab(tabId: number, items: storageItems) {
 }
 
 chrome.runtime.onInstalled.addListener(() => {
-    chrome.storage.sync.set({ onNewTab: false });
+    chrome.storage.sync.get("onNewTab", (items) => {
+        const onNewTab = items.onNewTab ?? false;
+        chrome.storage.sync.set({ onNewTab });
+    });
 });
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
