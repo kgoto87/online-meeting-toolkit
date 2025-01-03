@@ -22,14 +22,16 @@ export default defineConfig((opt) => {
                 output: {
                     entryFileNames: "[name].js",
                     assetFileNames: (assetInfo) => {
+                        let path = "assets/[name][extname]";
                         if (assetInfo.names) {
                             assetInfo.names.forEach((name) => {
                                 if (name.endsWith(".mp3")) {
-                                    return "assets/musics/[name][extname]";
+                                    console.log(name + " is music");
+                                    path = "assets/musics/[name][extname]";
                                 }
                             });
                         }
-                        return "assets/[name][extname]";
+                        return path;
                     },
                 },
             },
