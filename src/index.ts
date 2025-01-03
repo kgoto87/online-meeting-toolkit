@@ -1,4 +1,4 @@
-import "./styles/styles.scss";
+import "./styles/index.scss";
 import container from "./parts/container/container";
 import musicPlayer from "./parts/musicPlayer";
 import timer from "./parts/timer/timer";
