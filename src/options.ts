@@ -1,16 +1,25 @@
+import "./styles/options.scss";
+
+const messagingTime = 2000;
+const messagingBuffer = messagingTime + 1000;
 const onNewTabInput = document.getElementById("on-new-tab") as HTMLInputElement;
 const saveButton = document.getElementById("save") as HTMLButtonElement;
-const message = document.createElement("p");
-message.id = "message";
+const message = document.getElementById("message") as HTMLDivElement;
+const messageText = document.createElement("p");
 
 const saveOptions = (e: MouseEvent) => {
     e.preventDefault();
     chrome.storage.sync.set({ onNewTab: onNewTabInput.checked }, () => {
-        message.textContent = "Options saved.";
+        messageText.textContent = "Options saved.";
+        message.appendChild(messageText);
+        message.classList.add("show");
+        setTimeout(() => {
+            message.classList.remove("show");
+        }, messagingTime);
         setTimeout(() => {
             message.textContent = "";
-            message.style.display = "none";
-        }, 750);
+            message.removeChild(messageText);
+        }, messagingBuffer);
     });
 };
 
