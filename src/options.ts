@@ -1,7 +1,7 @@
 import "./styles/options.scss";
 
 const messagingTime = 2000;
-const messagingBuffer = messagingTime + 1000;
+const messagingBuffer = messagingTime + 100;
 const onNewTabInput = document.getElementById("on-new-tab") as HTMLInputElement;
 const saveButton = document.getElementById("save") as HTMLButtonElement;
 const message = document.getElementById("message") as HTMLDivElement;
