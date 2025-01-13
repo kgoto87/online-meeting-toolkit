@@ -1,5 +1,6 @@
 import "./styles/main.scss";
 import container from "./parts/container";
+import "./shortcuts/shortcuts";
 import musicPlayer from "./parts/musicPlayer/musicPlayer";
 import timer from "./parts/timer";
 
