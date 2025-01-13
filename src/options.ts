@@ -3,11 +3,10 @@ import "./styles/options.scss";
 const messagingTime = 2000;
 const messagingBuffer = messagingTime + 100;
 const onNewTabInput = document.getElementById("on-new-tab") as HTMLInputElement;
-const saveButton = document.getElementById("save") as HTMLButtonElement;
 const message = document.getElementById("message") as HTMLDivElement;
 const messageText = document.createElement("p");
 
-const saveOptions = (e: MouseEvent) => {
+const saveOptions = (e: Event) => {
     e.preventDefault();
     chrome.storage.sync.set({ onNewTab: onNewTabInput.checked }, () => {
         messageText.textContent = "Options saved.";
@@ -30,4 +29,4 @@ const restoreOptions = () => {
 };
 
 document.addEventListener("DOMContentLoaded", restoreOptions);
-saveButton.addEventListener("click", saveOptions);
+onNewTabInput.addEventListener("change", saveOptions);
