@@ -15,7 +15,7 @@ export default defineConfig((opt) => {
             outDir: "../dist",
             rollupOptions: {
                 input: {
-                    index: resolve(__dirname, "src/index.ts"),
+                    main: resolve(__dirname, "src/main.ts"),
                     background: resolve(__dirname, "src/background.ts"),
                     options: resolve(__dirname, "src/options.ts"),
                 },

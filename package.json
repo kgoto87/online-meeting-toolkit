@@ -2,7 +2,7 @@
     "name": "online-meeting-toolkit",
     "version": "0.1.0",
     "description": "Some extra functions to brighten up your online meeting",
-    "main": "index.js",
+    "main": "main.js",
     "type": "module",
     "scripts": {
         "test": "vitest",

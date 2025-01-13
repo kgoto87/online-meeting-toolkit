@@ -18,12 +18,12 @@ async function alreadyLoaded(tabId: number): Promise<boolean> {
 async function loadToolkit(tabId: number) {
     await chrome.scripting.insertCSS({
         target: { tabId },
-        files: ["assets/index.css"],
+        files: ["assets/main.css"],
     });
 
     await chrome.scripting.executeScript({
         target: { tabId },
-        files: ["index.js"],
+        files: ["main.js"],
     });
 
     chrome.tabs.sendMessage(tabId, { action: "trigger" });
