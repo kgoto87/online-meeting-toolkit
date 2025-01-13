@@ -8,7 +8,7 @@ export default musicPlayer;
 
 export const isPlaying = music.paused !== true;
 
-export function toggle() {
+export function togglePlay() {
     if (music.paused) {
         music.play();
     } else {
