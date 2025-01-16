@@ -1,5 +1,5 @@
 import "./styles/main.scss";
-import container from "./parts/container/container";
+import container from "./parts/container";
 import musicPlayer from "./parts/musicPlayer";
 import timer from "./parts/timer";
 
