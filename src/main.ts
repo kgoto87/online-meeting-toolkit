@@ -1,7 +1,7 @@
 import "./styles/main.scss";
 import container from "./parts/container/container";
 import musicPlayer from "./parts/musicPlayer";
-import timer from "./parts/timer/timer";
+import timer from "./parts/timer";
 
 function toggleDisplay() {
     if (document.getElementById(container.id)) {
