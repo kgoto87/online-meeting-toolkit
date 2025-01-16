@@ -1,4 +1,4 @@
-import { togglePlay } from "../parts/musicPlayer/musicPlayer";
+import { togglePlay } from "../parts/musicPlayer";
 
 const pressedKeys = new Set<string>();
 

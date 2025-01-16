@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import "./shortcuts";
 import userEvent from "@testing-library/user-event";
-import { togglePlay } from "../parts/musicPlayer/musicPlayer";
+import { togglePlay } from "../parts/musicPlayer";
 
-vi.mock("../parts/musicPlayer/musicPlayer", () => {
+vi.mock("../parts/musicPlayer", () => {
     return {
         togglePlay: vi.fn(),
     };

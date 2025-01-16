@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import { togglePlay, isPlaying } from "./musicPlayer";
+import { togglePlay, isPlaying } from ".";
 
 const { mockAudio } = vi.hoisted(() => {
     return {
