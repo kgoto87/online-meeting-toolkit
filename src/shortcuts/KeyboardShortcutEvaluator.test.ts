@@ -29,7 +29,7 @@ describe("Keyboard Shortcut", function () {
         });
         evaluator.newEvent(event);
 
-        const randomKey = Math.random() >= 0.5 ? "CtrlKey" : "ShiftKey";
+        const randomKey = Math.random() >= 0.5 ? "ctrlKey" : "altKey";
         const ctrlEvent = new KeyboardEvent("keydown", {
             code: "randomKey",
             [randomKey]: true,
@@ -52,10 +52,10 @@ describe("Keyboard Shortcut", function () {
         });
         evaluator.newEvent(ctrlEvent);
 
-        const shiftEvent = new KeyboardEvent("keydown", {
-            shiftKey: true,
+        const altEvent = new KeyboardEvent("keydown", {
+            altKey: true,
         });
-        evaluator.newEvent(shiftEvent);
+        evaluator.newEvent(altEvent);
 
         expect(evaluator.has("a")).toBeFalsy();
     });
@@ -69,16 +69,16 @@ describe("Keyboard Shortcut", function () {
         });
         evaluator.newEvent(ctrlEvent);
 
-        const shiftEvent = new KeyboardEvent("keydown", {
+        const altEvent = new KeyboardEvent("keydown", {
             code: "ShiftLeft",
-            shiftKey: true,
+            altKey: true,
         });
-        evaluator.newEvent(shiftEvent);
+        evaluator.newEvent(altEvent);
 
         const event = new KeyboardEvent("keydown", {
             key: "a",
             ctrlKey: true,
-            shiftKey: true,
+            altKey: true,
         });
         evaluator.newEvent(event);
 

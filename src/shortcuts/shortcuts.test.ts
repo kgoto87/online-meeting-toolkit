@@ -31,7 +31,7 @@ describe("Keyboard Shortcut", function () {
         vi.resetAllMocks();
     });
 
-    test("should toggle music status when Control+Shift+A keyboard shortcut are pressed", () => {
+    test("should toggle music status when the shortcut are pressed", () => {
         mockEvaluator.has.withImplementation(
             (key: string) => key === "a",
             () => {
