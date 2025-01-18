@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import "./shortcuts";
-import userEvent from "@testing-library/user-event";
 import { togglePlay } from "../parts/musicPlayer";
 
 vi.mock("../parts/musicPlayer", () => {
@@ -9,24 +8,36 @@ vi.mock("../parts/musicPlayer", () => {
     };
 });
 
+let { mockEvaluator } = vi.hoisted(() => {
+    const mockEvaluator = {
+        has: vi.fn(),
+        newEvent: vi.fn(),
+        removeEvent: vi.fn(),
+    };
+
+    return { mockEvaluator };
+});
+
+vi.mock("./KeyboardShortcutEvaluator", () => {
+    return {
+        default: mockEvaluator,
+    };
+});
+
 describe("Keyboard Shortcut", function () {
+    const mockEvent = new KeyboardEvent("keydown", {});
+
     beforeEach(() => {
         vi.resetAllMocks();
     });
 
-    test("should handle Control+Shift+A keyboard shortcut", async () => {
-        const user = userEvent.setup();
-
-        await user.keyboard("{Control>}{Shift>}a{/Shift}{/Control}");
-
-        expect(vi.mocked(togglePlay)).toHaveBeenCalled();
-    });
-
-    test("should not handle Control+Shift+S+A keyboard shortcut", async () => {
-        const user = userEvent.setup();
-
-        await user.keyboard("{Control>}{Shift>}{s>}a{/s}{/Shift}{/Control}");
-
-        expect(vi.mocked(togglePlay)).toHaveBeenCalledTimes(0);
+    test("should toggle music status when Control+Shift+A keyboard shortcut are pressed", () => {
+        mockEvaluator.has.withImplementation(
+            (key: string) => key === "a",
+            () => {
+                document.dispatchEvent(mockEvent);
+                expect(vi.mocked(togglePlay)).toHaveBeenCalled();
+            }
+        );
     });
 });
