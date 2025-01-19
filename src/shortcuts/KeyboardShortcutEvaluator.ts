@@ -9,12 +9,12 @@ export default {
     newEvent: function (e: KeyboardEvent) {
         currentEvent = e;
         pressedKeys.add(e.code);
-        hasBasicKeys = e.ctrlKey && e.altKey;
+        hasBasicKeys = e.ctrlKey && e.metaKey;
     },
     removeEvent: function (e: KeyboardEvent) {
         pressedKeys.delete(e.code);
         currentEvent = undefined;
-        hasBasicKeys = e.ctrlKey && e.altKey;
+        hasBasicKeys = e.ctrlKey && e.metaKey;
     },
     has: function (key: Key): boolean {
         if (!currentEvent) {
