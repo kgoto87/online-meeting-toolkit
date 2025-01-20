@@ -102,6 +102,38 @@
         }
     }
 
+    .emojis {
+        padding: 0.3em 1em;
+        margin: auto;
+        max-width: 150px;
+        overflow: scroll;
+        white-space: nowrap;
+        .big-emoji {
+            display: block;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 50vh;
+            height: 50vh;
+            font-size: 50vh;
+            text-align: center;
+            margin: auto;
+            line-height: 1;
+            z-index: -1;
+            display: none;
+            &.shown {
+                z-index: 999999;
+                display: block;
+            }
+        }
+        .emoji {
+            cursor: pointer;
+            margin-right: 1em;
+        }
+    }
+
     .music-player {
         audio {
             height: 34px;

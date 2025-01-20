@@ -1,6 +1,7 @@
 import "./styles/main.scss";
 import container from "./parts/container";
 import "./shortcuts/shortcuts";
+import emoji from "./parts/emoji";
 import musicPlayer from "./parts/musicPlayer";
 import timer from "./parts/timer";
 
@@ -9,6 +10,7 @@ function toggleDisplay() {
         document.body.removeChild(container);
     } else {
         container.appendChild(timer);
+        container.appendChild(emoji);
         container.appendChild(musicPlayer);
 
         document.body.appendChild(container);
