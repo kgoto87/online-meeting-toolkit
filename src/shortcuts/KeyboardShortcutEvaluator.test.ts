@@ -86,4 +86,38 @@ describe("Keyboard Shortcut", function () {
 
         expect(evaluator.has("a")).toBeTruthy();
     });
+
+    it("should return true when the correct keys are pressed after another combination", async function () {
+        const evaluator = (await import("./KeyboardShortcutEvaluator")).default;
+
+        const ctrlEvent = new KeyboardEvent("keydown", {
+            code: "ControlLeft",
+            ctrlKey: true,
+        });
+        evaluator.newEvent(ctrlEvent);
+
+        const metaEvent = new KeyboardEvent("keydown", {
+            code: "CommandLeft",
+            metaKey: true,
+        });
+        evaluator.newEvent(metaEvent);
+
+        const event = new KeyboardEvent("keydown", {
+            key: "a",
+            ctrlKey: true,
+            metaKey: true,
+        });
+        evaluator.newEvent(event);
+
+        expect(evaluator.has("a")).toBeTruthy();
+
+        const anotherEvent = new KeyboardEvent("keydown", {
+            key: "z",
+            ctrlKey: true,
+            metaKey: true,
+        });
+        evaluator.newEvent(anotherEvent);
+
+        expect(evaluator.has("z")).toBeTruthy();
+    });
 });

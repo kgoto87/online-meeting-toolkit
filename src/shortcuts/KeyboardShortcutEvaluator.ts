@@ -1,19 +1,12 @@
-type Key = "a";
+const KEYS = ["a", "z", "x", "c", "v"];
+type Key = (typeof KEYS)[number];
 
-const numberOfKeys = 3;
 let currentEvent: KeyboardEvent | undefined;
 let hasBasicKeys: boolean = false;
-const pressedKeys = new Set<string>();
 
 export default {
     newEvent: function (e: KeyboardEvent) {
         currentEvent = e;
-        pressedKeys.add(e.code);
-        hasBasicKeys = e.ctrlKey && e.metaKey;
-    },
-    removeEvent: function (e: KeyboardEvent) {
-        pressedKeys.delete(e.code);
-        currentEvent = undefined;
         hasBasicKeys = e.ctrlKey && e.metaKey;
     },
     has: function (key: Key): boolean {
@@ -21,10 +14,6 @@ export default {
             throw new Error("No event to evaluate");
         }
 
-        return (
-            hasBasicKeys &&
-            currentEvent.key.toLowerCase() === key &&
-            pressedKeys.size === numberOfKeys
-        );
+        return hasBasicKeys && currentEvent.key.toLowerCase() === key;
     },
 };
