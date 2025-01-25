@@ -1,4 +1,4 @@
-import "./styles/options.scss";
+import "./options.scss";
 
 const messagingTime = 2000;
 const messagingBuffer = messagingTime + 100;
