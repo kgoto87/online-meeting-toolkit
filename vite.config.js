@@ -26,7 +26,6 @@ export default defineConfig((opt) => {
                         if (assetInfo.names) {
                             assetInfo.names.forEach((name) => {
                                 if (name.endsWith(".mp3")) {
-                                    console.log(name + " is music");
                                     path = "assets/musics/[name][extname]";
                                 }
                             });
