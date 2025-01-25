@@ -3,10 +3,10 @@ import "./styles/options.scss";
 const messagingTime = 2000;
 const messagingBuffer = messagingTime + 100;
 const onNewTabInput = document.getElementById("on-new-tab") as HTMLInputElement;
-const soundVolumeInput = document.getElementById(
-    "sound-volume"
+const soundEffectVolumeInput = document.getElementById(
+    "sound-effect-volume"
 ) as HTMLInputElement;
-const defaultSoundVolume = 2;
+const defaultsoundEffectVolume = 2;
 const message = document.getElementById("message") as HTMLDivElement;
 const messageText = document.createElement("p");
 
@@ -14,7 +14,7 @@ const saveOptions = (e: Event) => {
     e.preventDefault();
     const options = {
         onNewTab: onNewTabInput.checked,
-        soundVolume: soundVolumeInput.value,
+        soundEffectVolume: soundEffectVolumeInput.value,
     };
     chrome.storage.sync.set(options, () => {
         messageText.textContent = "Options saved.";
@@ -34,14 +34,14 @@ const saveOptions = (e: Event) => {
 
 const restoreOptions = () => {
     chrome.storage.sync.get(
-        { onNewTab: false, soundVolume: defaultSoundVolume },
+        { onNewTab: false, soundEffectVolume: defaultsoundEffectVolume },
         (items) => {
             onNewTabInput.checked = items.onNewTab;
-            soundVolumeInput.value = items.soundVolume;
+            soundEffectVolumeInput.value = items.soundEffectVolume;
         }
     );
 };
 
 document.addEventListener("DOMContentLoaded", restoreOptions);
 onNewTabInput.addEventListener("change", saveOptions);
-soundVolumeInput.addEventListener("input", saveOptions);
+soundEffectVolumeInput.addEventListener("input", saveOptions);
