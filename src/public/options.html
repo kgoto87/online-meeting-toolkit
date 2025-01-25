@@ -7,8 +7,14 @@
     <body>
         <h1>Online Meeting Toolkit: Options</h1>
         <form>
-            <label for="on-new-tab">Always on in new tab:</label>
-            <input type="checkbox" id="on-new-tab" name="on-new-tab" />
+            <div>
+                <label for="on-new-tab">Always on in new tab:</label>
+                <input type="checkbox" id="on-new-tab" name="on-new-tab" />
+            </div>
+            <div>
+                <label for="sound-volume">Sound volume:</label>
+                <input type="range" id="sound-volume" name="sound-volume" min="0" max="100" />
+            </div>
         </form>
         <div id="message"></div>
         <script src="options.js"></script>
