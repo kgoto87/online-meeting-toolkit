@@ -20,7 +20,7 @@ export function makeIncrementButton(
     incrementButton.addEventListener("mousedown", () => {
         if (state.isRunning) return;
         increment(); // Increment once immediately
-        intervalId = window.setInterval(increment, 150); // Continue incrementing every 150ms
+        intervalId = window.setInterval(increment, 150);
     });
 
     const stopIncrement = () => {

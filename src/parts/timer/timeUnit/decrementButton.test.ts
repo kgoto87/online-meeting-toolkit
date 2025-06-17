@@ -42,7 +42,7 @@ describe("makeDecrementButton", () => {
             vi.advanceTimersByTime(150);
             expect(mockInput.value).toBe("8");
             vi.advanceTimersByTime(300); // 150 * 2
-            expect(mockInput.value).toBe("6"); // Decremented twice more (total 450ms)
+            expect(mockInput.value).toBe("6");
 
             // Simulate mouseup
             decrementButton.dispatchEvent(new MouseEvent("mouseup"));

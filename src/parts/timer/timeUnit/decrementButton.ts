@@ -20,7 +20,7 @@ export function makeDecrementButton(
     decrementButton.addEventListener("mousedown", () => {
         if (state.isRunning) return;
         decrement(); // Decrement once immediately
-        intervalId = window.setInterval(decrement, 150); // Continue decrementing every 150ms
+        intervalId = window.setInterval(decrement, 150);
     });
 
     const stopDecrement = () => {

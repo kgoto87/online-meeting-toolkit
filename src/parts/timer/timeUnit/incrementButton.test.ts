@@ -42,7 +42,7 @@ describe("makeIncrementButton", () => {
             vi.advanceTimersByTime(150);
             expect(mockInput.value).toBe("2");
             vi.advanceTimersByTime(300); // 150 * 2
-            expect(mockInput.value).toBe("4"); // Incremented twice more (total 450ms)
+            expect(mockInput.value).toBe("4");
 
             // Simulate mouseup
             incrementButton.dispatchEvent(new MouseEvent("mouseup"));
