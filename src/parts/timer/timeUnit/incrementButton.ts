@@ -1,5 +1,6 @@
 import { state } from "../../../state";
 import { timeParams } from "./types/timeParams";
+import { HOLD_INTERVAL_MS } from "./constants";
 
 export function makeIncrementButton(
     input: HTMLInputElement,
@@ -19,8 +20,8 @@ export function makeIncrementButton(
 
     incrementButton.addEventListener("mousedown", () => {
         if (state.isRunning) return;
-        increment(); // Increment once immediately
-        intervalId = window.setInterval(increment, 150);
+        increment();
+        intervalId = window.setInterval(increment, HOLD_INTERVAL_MS);
     });
 
     const stopIncrement = () => {

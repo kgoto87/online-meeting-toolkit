@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { makeIncrementButton } from "./incrementButton";
+import { HOLD_INTERVAL_MS } from "./constants";
 
 describe("makeIncrementButton", () => {
     const { mockState } = vi.hoisted(() => {
@@ -39,14 +40,14 @@ describe("makeIncrementButton", () => {
             expect(mockInput.value).toBe("1"); // Incremented once immediately
 
             // Advance timers to simulate holding the button
-            vi.advanceTimersByTime(150);
+            vi.advanceTimersByTime(HOLD_INTERVAL_MS);
             expect(mockInput.value).toBe("2");
-            vi.advanceTimersByTime(300); // 150 * 2
+            vi.advanceTimersByTime(HOLD_INTERVAL_MS * 2);
             expect(mockInput.value).toBe("4");
 
             // Simulate mouseup
             incrementButton.dispatchEvent(new MouseEvent("mouseup"));
-            vi.advanceTimersByTime(150); // Should not increment further
+            vi.advanceTimersByTime(HOLD_INTERVAL_MS); // Should not increment further
             expect(mockInput.value).toBe("4");
         });
 
@@ -60,11 +61,11 @@ describe("makeIncrementButton", () => {
             incrementButton.dispatchEvent(new MouseEvent("mousedown"));
             expect(mockInput.value).toBe("1");
 
-            vi.advanceTimersByTime(150);
+            vi.advanceTimersByTime(HOLD_INTERVAL_MS);
             expect(mockInput.value).toBe("2");
 
             incrementButton.dispatchEvent(new MouseEvent("mouseleave"));
-            vi.advanceTimersByTime(150); // Should not increment further
+            vi.advanceTimersByTime(HOLD_INTERVAL_MS); // Should not increment further
             expect(mockInput.value).toBe("2");
         });
 
@@ -78,7 +79,7 @@ describe("makeIncrementButton", () => {
             incrementButton.dispatchEvent(new MouseEvent("mousedown"));
             expect(mockInput.value).toBe("0");
 
-            vi.advanceTimersByTime(150);
+            vi.advanceTimersByTime(HOLD_INTERVAL_MS);
             expect(mockInput.value).toBe("0");
         });
 
@@ -92,10 +93,10 @@ describe("makeIncrementButton", () => {
             incrementButton.dispatchEvent(new MouseEvent("mousedown"));
             expect(mockInput.value).toBe("1");
 
-            vi.advanceTimersByTime(150);
+            vi.advanceTimersByTime(HOLD_INTERVAL_MS);
             expect(mockInput.value).toBe("2"); // Reached max
 
-            vi.advanceTimersByTime(150); // Should not increment further
+            vi.advanceTimersByTime(HOLD_INTERVAL_MS); // Should not increment further
             expect(mockInput.value).toBe("2");
 
             incrementButton.dispatchEvent(new MouseEvent("mouseup"));

@@ -1,5 +1,6 @@
 import { state } from "../../../state";
 import { timeParams } from "./types/timeParams";
+import { HOLD_INTERVAL_MS } from "./constants";
 
 export function makeDecrementButton(
     input: HTMLInputElement,
@@ -19,8 +20,8 @@ export function makeDecrementButton(
 
     decrementButton.addEventListener("mousedown", () => {
         if (state.isRunning) return;
-        decrement(); // Decrement once immediately
-        intervalId = window.setInterval(decrement, 150);
+        decrement();
+        intervalId = window.setInterval(decrement, HOLD_INTERVAL_MS);
     });
 
     const stopDecrement = () => {

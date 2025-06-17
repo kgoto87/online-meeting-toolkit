@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { makeDecrementButton } from "./decrementButton";
+import { HOLD_INTERVAL_MS } from "./constants";
 
 describe("makeDecrementButton", () => {
     const { mockState } = vi.hoisted(() => {
@@ -39,14 +40,14 @@ describe("makeDecrementButton", () => {
             expect(mockInput.value).toBe("9"); // Decremented once immediately
 
             // Advance timers to simulate holding the button
-            vi.advanceTimersByTime(150);
+            vi.advanceTimersByTime(HOLD_INTERVAL_MS);
             expect(mockInput.value).toBe("8");
-            vi.advanceTimersByTime(300); // 150 * 2
+            vi.advanceTimersByTime(HOLD_INTERVAL_MS * 2);
             expect(mockInput.value).toBe("6");
 
             // Simulate mouseup
             decrementButton.dispatchEvent(new MouseEvent("mouseup"));
-            vi.advanceTimersByTime(150); // Should not decrement further
+            vi.advanceTimersByTime(HOLD_INTERVAL_MS); // Should not decrement further
             expect(mockInput.value).toBe("6");
         });
 
@@ -60,11 +61,11 @@ describe("makeDecrementButton", () => {
             decrementButton.dispatchEvent(new MouseEvent("mousedown"));
             expect(mockInput.value).toBe("9");
 
-            vi.advanceTimersByTime(150);
+            vi.advanceTimersByTime(HOLD_INTERVAL_MS);
             expect(mockInput.value).toBe("8");
 
             decrementButton.dispatchEvent(new MouseEvent("mouseleave"));
-            vi.advanceTimersByTime(150); // Should not decrement further
+            vi.advanceTimersByTime(HOLD_INTERVAL_MS); // Should not decrement further
             expect(mockInput.value).toBe("8");
         });
 
@@ -78,7 +79,7 @@ describe("makeDecrementButton", () => {
             decrementButton.dispatchEvent(new MouseEvent("mousedown"));
             expect(mockInput.value).toBe("5");
 
-            vi.advanceTimersByTime(150);
+            vi.advanceTimersByTime(HOLD_INTERVAL_MS);
             expect(mockInput.value).toBe("5");
         });
 
@@ -92,10 +93,10 @@ describe("makeDecrementButton", () => {
             decrementButton.dispatchEvent(new MouseEvent("mousedown"));
             expect(mockInput.value).toBe("9");
 
-            vi.advanceTimersByTime(150);
+            vi.advanceTimersByTime(HOLD_INTERVAL_MS);
             expect(mockInput.value).toBe("8"); // Reached min
 
-            vi.advanceTimersByTime(150); // Should not decrement further
+            vi.advanceTimersByTime(HOLD_INTERVAL_MS); // Should not decrement further
             expect(mockInput.value).toBe("8");
 
             decrementButton.dispatchEvent(new MouseEvent("mouseup"));
