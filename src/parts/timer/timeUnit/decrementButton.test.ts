@@ -15,6 +15,7 @@ describe("makeDecrementButton", () => {
 
     beforeEach(() => {
         vi.resetModules();
+        vi.useFakeTimers(); // Add this line
     });
 
     test("make a decrement button", () => {
@@ -25,42 +26,79 @@ describe("makeDecrementButton", () => {
         expect(incrementButton.innerText).toBe("-");
     });
 
-    describe("clicking the button", () => {
-        test("nothing happens when running", () => {
+    describe("holding the button", () => {
+        test("decrements value on mousedown and continues while held", () => {
+            mockState.isRunning = false;
+            const mockInput = document.createElement("input");
+            const mockParams = { min: 0, max: 10, step: 1 };
+            mockInput.value = "10";
+            const decrementButton = makeDecrementButton(mockInput, mockParams);
+
+            // Simulate mousedown
+            decrementButton.dispatchEvent(new MouseEvent("mousedown"));
+            expect(mockInput.value).toBe("9"); // Decremented once immediately
+
+            // Advance timers to simulate holding the button
+            vi.advanceTimersByTime(150);
+            expect(mockInput.value).toBe("8");
+            vi.advanceTimersByTime(300); // 150 * 2
+            expect(mockInput.value).toBe("6"); // Decremented twice more (total 450ms)
+
+            // Simulate mouseup
+            decrementButton.dispatchEvent(new MouseEvent("mouseup"));
+            vi.advanceTimersByTime(150); // Should not decrement further
+            expect(mockInput.value).toBe("6");
+        });
+
+        test("stops decrementing on mouseleave", () => {
+            mockState.isRunning = false;
+            const mockInput = document.createElement("input");
+            const mockParams = { min: 0, max: 10, step: 1 };
+            mockInput.value = "10";
+            const decrementButton = makeDecrementButton(mockInput, mockParams);
+
+            decrementButton.dispatchEvent(new MouseEvent("mousedown"));
+            expect(mockInput.value).toBe("9");
+
+            vi.advanceTimersByTime(150);
+            expect(mockInput.value).toBe("8");
+
+            decrementButton.dispatchEvent(new MouseEvent("mouseleave"));
+            vi.advanceTimersByTime(150); // Should not decrement further
+            expect(mockInput.value).toBe("8");
+        });
+
+        test("does not decrement if state.isRunning is true on mousedown", () => {
             mockState.isRunning = true;
-            const mockInput = document.createElement("input");
-            const mockParams = { min: 0, max: 10, step: 1 };
-            mockInput.value = "0";
-            const decrementButton = makeDecrementButton(mockInput, mockParams);
-            decrementButton.click();
-            expect(mockInput.value).toBe("0");
-        });
-
-        test("nothing happens when at min", () => {
-            mockState.isRunning = false;
-            const mockInput = document.createElement("input");
-            const mockParams = { min: 0, max: 10, step: 1 };
-            mockInput.value = "0";
-            const decrementButton = makeDecrementButton(mockInput, mockParams);
-            decrementButton.click();
-            expect(mockInput.value).toBe("0");
-        });
-
-        test("decrement the value", () => {
-            let eventDispatched = false;
-            document.addEventListener(
-                "change-time",
-                () => (eventDispatched = true)
-            );
-
-            mockState.isRunning = false;
             const mockInput = document.createElement("input");
             const mockParams = { min: 0, max: 10, step: 1 };
             mockInput.value = "5";
             const decrementButton = makeDecrementButton(mockInput, mockParams);
-            decrementButton.click();
-            expect(mockInput.value).toBe("4");
-            expect(eventDispatched).toBeTruthy();
+
+            decrementButton.dispatchEvent(new MouseEvent("mousedown"));
+            expect(mockInput.value).toBe("5");
+
+            vi.advanceTimersByTime(150);
+            expect(mockInput.value).toBe("5");
+        });
+
+        test("stops decrementing if min is reached", () => {
+            mockState.isRunning = false;
+            const mockInput = document.createElement("input");
+            const mockParams = { min: 8, max: 10, step: 1 }; // Min is 8
+            mockInput.value = "10";
+            const decrementButton = makeDecrementButton(mockInput, mockParams);
+
+            decrementButton.dispatchEvent(new MouseEvent("mousedown"));
+            expect(mockInput.value).toBe("9");
+
+            vi.advanceTimersByTime(150);
+            expect(mockInput.value).toBe("8"); // Reached min
+
+            vi.advanceTimersByTime(150); // Should not decrement further
+            expect(mockInput.value).toBe("8");
+
+            decrementButton.dispatchEvent(new MouseEvent("mouseup"));
         });
     });
 });

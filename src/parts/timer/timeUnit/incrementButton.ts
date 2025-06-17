@@ -7,12 +7,31 @@ export function makeIncrementButton(
 ) {
     const incrementButton = document.createElement("button");
     incrementButton.innerText = "+";
-    incrementButton.addEventListener("click", () => {
+    let intervalId: number | undefined;
+
+    const increment = () => {
         if (state.isRunning) return;
         if (parseInt(input.value) >= params.max) return;
         input.value = (parseInt(input.value) + params.step).toString();
         input.dispatchEvent(new Event("change"));
         document.dispatchEvent(new Event("change-time"));
+    };
+
+    incrementButton.addEventListener("mousedown", () => {
+        if (state.isRunning) return;
+        increment(); // Increment once immediately
+        intervalId = window.setInterval(increment, 150); // Continue incrementing every 150ms
     });
+
+    const stopIncrement = () => {
+        if (intervalId) {
+            window.clearInterval(intervalId);
+            intervalId = undefined;
+        }
+    };
+
+    incrementButton.addEventListener("mouseup", stopIncrement);
+    incrementButton.addEventListener("mouseleave", stopIncrement);
+
     return incrementButton;
 }
