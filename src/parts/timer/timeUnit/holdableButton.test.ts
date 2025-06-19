@@ -1,11 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
-// Import the new functions to test them directly
-import { makeIncrementButton, makeDecrementButton } from "./holdableButton"; // Updated import names
+import { makeIncrementButton, makeDecrementButton } from "./holdableButton";
 import { HOLD_INTERVAL_MS } from "./constants";
 import { timeParams } from "./types/timeParams";
-
-// Define Operation type locally for the test file
-type Operation = "increment" | "decrement";
 
 // Common setup for both button types
 const setupTest = (initialValue: string, operation: "increment" | "decrement") => {
@@ -13,13 +9,12 @@ const setupTest = (initialValue: string, operation: "increment" | "decrement") =
     mockInput.value = initialValue;
     const mockParams: timeParams = { min: 0, max: 10, step: 1 };
 
-    // Mock dispatchEvent for input and document
     mockInput.dispatchEvent = vi.fn();
     document.dispatchEvent = vi.fn();
 
     const button = operation === "increment"
-        ? makeIncrementButton(mockInput, mockParams) // Updated function name
-        : makeDecrementButton(mockInput, mockParams); // Updated function name
+        ? makeIncrementButton(mockInput, mockParams)
+        : makeDecrementButton(mockInput, mockParams);
 
     return { mockInput, mockParams, button };
 };
@@ -42,7 +37,7 @@ describe("Holdable Buttons", () => {
         mockState.isRunning = false;
     });
 
-    describe("makeIncrementButton", () => { // Updated describe block
+    describe("makeIncrementButton", () => {
         test("creates a button with '+' text", () => {
             const { button } = setupTest("5", "increment");
             expect(button.innerText).toBe("+");
@@ -63,16 +58,16 @@ describe("Holdable Buttons", () => {
         });
 
         test("stops incrementing if max is reached", () => {
-            const { mockInput, button, mockParams } = setupTest("9", "increment"); // Start near max
-            button.dispatchEvent(new MouseEvent("mousedown")); // value becomes 10 (max)
+            const { mockInput, button, mockParams } = setupTest("9", "increment");
+            button.dispatchEvent(new MouseEvent("mousedown"));
             expect(mockInput.value).toBe(mockParams.max.toString());
 
             vi.advanceTimersByTime(HOLD_INTERVAL_MS);
-            expect(mockInput.value).toBe(mockParams.max.toString()); // Should not increment further
+            expect(mockInput.value).toBe(mockParams.max.toString());
         });
     });
 
-    describe("makeDecrementButton", () => { // Updated describe block
+    describe("makeDecrementButton", () => {
         test("creates a button with '-' text", () => {
             const { button } = setupTest("5", "decrement");
             expect(button.innerText).toBe("-");
@@ -93,20 +88,19 @@ describe("Holdable Buttons", () => {
         });
 
         test("stops decrementing if min is reached", () => {
-            const { mockInput, button, mockParams } = setupTest("1", "decrement"); // Start near min
-            button.dispatchEvent(new MouseEvent("mousedown")); // value becomes 0 (min)
+            const { mockInput, button, mockParams } = setupTest("1", "decrement");
+            button.dispatchEvent(new MouseEvent("mousedown"));
             expect(mockInput.value).toBe(mockParams.min.toString());
 
             vi.advanceTimersByTime(HOLD_INTERVAL_MS);
-            expect(mockInput.value).toBe(mockParams.min.toString()); // Should not decrement further
+            expect(mockInput.value).toBe(mockParams.min.toString());
         });
     });
 
-    // Common tests for both button types (mouseup, mouseleave, isRunning)
     describe("Common Holdable Button Behavior", () => {
-        const operations: Operation[] = ["increment", "decrement"];
+        const operations: ("increment" | "decrement")[] = ["increment", "decrement"];
         operations.forEach(op => {
-            const initialVal = op === "increment" ? "5" : "5";
+            const initialVal = "5";
 
             test(`[${op}] stops performing update on mouseup`, () => {
                 const { mockInput, button } = setupTest(initialVal, op);
@@ -115,7 +109,7 @@ describe("Holdable Buttons", () => {
 
                 vi.advanceTimersByTime(HOLD_INTERVAL_MS);
                 const valueAfterInterval = mockInput.value;
-                expect(valueAfterInterval).not.toBe(valueAfterMouseDown); // Ensure it changed
+                expect(valueAfterInterval).not.toBe(valueAfterMouseDown);
 
                 button.dispatchEvent(new MouseEvent("mouseup"));
                 vi.advanceTimersByTime(HOLD_INTERVAL_MS * 5);
