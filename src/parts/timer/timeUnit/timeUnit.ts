@@ -21,6 +21,26 @@ export class TimeUnit {
             this.display.innerText = this.input.value.padStart(2, "0");
         });
 
+        this.display.addEventListener("click", () => {
+            this.input.style.display = "inline";
+            this.display.style.display = "none";
+            this.input.focus();
+        });
+
+        this.input.addEventListener("blur", () => {
+            const value = parseInt(this.input.value, 10);
+            if (isNaN(value) || value < this.params.min) {
+                this.input.value = this.params.min.toString();
+            } else if (value > this.params.max) {
+                this.input.value = this.params.max.toString();
+            } else {
+                this.input.value = value.toString(); // Remove leading zeros
+            }
+            this.display.innerText = this.input.value.padStart(2, "0");
+            this.input.style.display = "none";
+            this.display.style.display = "inline";
+        });
+
         const wrapper = document.createElement("div");
         wrapper.appendChild(this.input);
         wrapper.appendChild(this.display);

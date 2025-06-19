@@ -100,6 +100,31 @@
             cursor: pointer;
             margin: 0.2em 0.3em;
         }
+
+        input[type="number"] {
+            appearance: textfield;
+            -moz-appearance: textfield;
+
+            &::-webkit-inner-spin-button,
+            &::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            &:focus {
+                font-size: 1.4em;
+                outline: none;
+                text-align: center;
+                color: inherit;
+                background-color: inherit;
+                border: none;
+                padding: 0;
+                width: auto;
+                height: auto;
+                cursor: text;
+                user-select: text;
+            }
+        }
     }
 
     .emojis {
