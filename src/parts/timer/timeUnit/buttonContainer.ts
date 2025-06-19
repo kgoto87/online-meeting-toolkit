@@ -1,5 +1,4 @@
-import { makeDecrementButton } from "./decrementButton";
-import { makeIncrementButton } from "./incrementButton";
+import { makeDecrementButton, makeIncrementButton } from "./holdableButton"; // Updated import path
 import { timeParams } from "./types/timeParams";
 
 export function makeButtonContainer(
