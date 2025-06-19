@@ -8,8 +8,8 @@ export class Time {
     readonly wrapper: HTMLDivElement;
 
     constructor() {
-        this.minutes = new TimeUnit();
-        this.seconds = new TimeUnit();
+        this.minutes = new TimeUnit("minutes");
+        this.seconds = new TimeUnit("seconds");
 
         document.addEventListener("change-time", () =>
             setInitialTime(

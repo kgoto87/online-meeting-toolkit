@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 import { TimeUnit } from "./timeUnit";
 
 describe("timeUnit", () => {
-    const timeUnit = new TimeUnit();
+    const timeUnit = new TimeUnit("test-unit");
 
     test('display should be "00" initially', () => {
         expect(timeUnit.display.innerText).toBe("00");

@@ -12,8 +12,8 @@ export class TimeUnit {
     readonly input: HTMLInputElement;
     readonly display: HTMLSpanElement;
 
-    constructor() {
-        this.input = this.makeInput();
+    constructor(name: string) {
+        this.input = this.makeInput(name);
 
         this.display = this.makeDisplay();
 
@@ -28,12 +28,13 @@ export class TimeUnit {
         this.wrapper = wrapper;
     }
 
-    private makeInput() {
+    private makeInput(name: string): HTMLInputElement {
         const input = document.createElement("input");
         input.type = "number";
         input.value = "0";
         input.min = this.params.min.toString();
         input.max = this.params.max.toString();
+        input.name = name;
         return input;
     }
 
