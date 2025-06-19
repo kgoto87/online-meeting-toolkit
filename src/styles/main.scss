@@ -101,15 +101,9 @@
             margin: 0.2em 0.3em;
         }
 
-        input[type="number"] {
+        input[type="text"] {
             appearance: textfield;
             -moz-appearance: textfield;
-
-            &::-webkit-inner-spin-button,
-            &::-webkit-outer-spin-button {
-                -webkit-appearance: none;
-                margin: 0;
-            }
 
             &:focus {
                 font-size: 1.4em;
@@ -119,7 +113,7 @@
                 background-color: inherit;
                 border: none;
                 padding: 0;
-                width: auto;
+                width: 33px;
                 height: auto;
                 cursor: text;
                 user-select: text;

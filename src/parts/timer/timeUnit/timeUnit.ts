@@ -24,7 +24,11 @@ export class TimeUnit {
         this.display.addEventListener("click", () => {
             this.input.style.display = "inline";
             this.display.style.display = "none";
+
+            // Temporarily change type to text for selection
+            this.input.type = "text";
             this.input.focus();
+            this.input.setSelectionRange(0, this.input.value.length);
         });
 
         this.input.addEventListener("blur", () => {
@@ -39,6 +43,9 @@ export class TimeUnit {
             this.display.innerText = this.input.value.padStart(2, "0");
             this.input.style.display = "none";
             this.display.style.display = "inline";
+
+            // Revert type back to number
+            this.input.type = "number";
         });
 
         const wrapper = document.createElement("div");
