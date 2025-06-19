@@ -7,8 +7,8 @@ container.className = "emojis";
 container.appendChild(bigEmoji);
 
 ["👍", "😂", "🎉", "😢", "😡", "😮", "🙏", "👏", "🔥", "🙌"].forEach(
-    (emoji) => {
-        const button = createEmojiButton(emoji);
+    (emoji, index) => {
+        const button = createEmojiButton(emoji, index);
         container.appendChild(button);
     }
 );
