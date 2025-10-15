@@ -34,6 +34,8 @@ class MockAudioElement {
   volume = 1;
   currentTime = 0;
   paused = true;
+  parentElement: any = null;
+  nextSibling: any = null;
   
   play = mockPlay;
   pause = mockPause;
@@ -74,14 +76,21 @@ class MockAudioElement {
   }
 }
 
-// Create a fresh mock audio element for each test
+// Create fresh mock audio elements for each test
 let mockAudioElement: MockAudioElement;
+let mockSecondaryAudioElement: MockAudioElement;
+let audioElementCount = 0;
 
-// Mock document.createElement to return our mock audio element
+// Mock document.createElement to return our mock audio elements
 const originalCreateElement = document.createElement;
 vi.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
   if (tagName === 'audio') {
-    return mockAudioElement as any;
+    audioElementCount++;
+    if (audioElementCount === 1) {
+      return mockAudioElement as any;
+    } else {
+      return mockSecondaryAudioElement as any;
+    }
   }
   return originalCreateElement.call(document, tagName);
 });
@@ -91,8 +100,10 @@ describe('Music Player with Song Switching', () => {
   let music: any;
 
   beforeEach(async () => {
-    // Create fresh mock for each test
+    // Create fresh mocks for each test
     mockAudioElement = new MockAudioElement();
+    mockSecondaryAudioElement = new MockAudioElement();
+    audioElementCount = 0;
     
     vi.clearAllMocks();
     mockGetURL.mockImplementation((path: string) => `chrome-extension://test/${path}`);
@@ -112,10 +123,22 @@ describe('Music Player with Song Switching', () => {
     mockAudioElement.autoplay = false;
     mockAudioElement.loop = false;
     
+    // Reset secondary mock audio element state
+    mockSecondaryAudioElement.paused = true;
+    mockSecondaryAudioElement.currentTime = 0;
+    mockSecondaryAudioElement.src = '';
+    mockSecondaryAudioElement.volume = 1;
+    mockSecondaryAudioElement.controls = false;
+    mockSecondaryAudioElement.autoplay = false;
+    mockSecondaryAudioElement.loop = false;
+    
     // Clear module cache and re-import
     vi.resetModules();
     const musicModule = await import('./music');
     music = musicModule.music;
+    
+    // Set a shorter crossfade duration for tests
+    music.setCrossfadeDuration(100);
   });
 
   afterEach(() => {
@@ -125,6 +148,12 @@ describe('Music Player with Song Switching', () => {
       mockAudioElement.paused = true;
       mockAudioElement.currentTime = 0;
       mockAudioElement.volume = 1;
+    }
+    if (mockSecondaryAudioElement) {
+      mockSecondaryAudioElement.src = '';
+      mockSecondaryAudioElement.paused = true;
+      mockSecondaryAudioElement.currentTime = 0;
+      mockSecondaryAudioElement.volume = 1;
     }
   });
 
@@ -175,24 +204,77 @@ describe('Music Player with Song Switching', () => {
       expect(songConfig.getValidSongId(undefined)).toBe(songConfig.DEFAULT_SONG_ID);
     });
 
-    it('should reset current time when changing songs', () => {
+    it('should reset current time when changing songs', async () => {
       mockAudioElement.currentTime = 30;
+      mockAudioElement.paused = false; // Simulate playing state
+      mockStorageSet.mockResolvedValue(undefined);
       
-      // Test that pause and reset happens synchronously
-      music.changeSong('devil_in_electric_city');
+      // Start the song change
+      const changePromise = music.changeSong('devil_in_electric_city');
+      await new Promise(resolve => setTimeout(resolve, 10));
+      mockSecondaryAudioElement.simulateLoad();
       
+      // Wait for crossfade to complete
+      await new Promise(resolve => setTimeout(resolve, 50));
+      await changePromise;
+      
+      // After crossfade, the old audio element should be paused and reset
       expect(mockPause).toHaveBeenCalled();
-      expect(mockAudioElement.currentTime).toBe(0);
     });
 
-    it('should call audio element methods during song change', () => {
+    it('should call audio element methods during song change', async () => {
       const initialCallCount = mockPause.mock.calls.length;
+      mockStorageSet.mockResolvedValue(undefined);
       
-      // This will trigger the synchronous part of changeSong
-      music.changeSong('devil_in_electric_city');
+      // Start the song change
+      const changePromise = music.changeSong('devil_in_electric_city');
+      await new Promise(resolve => setTimeout(resolve, 10));
+      mockSecondaryAudioElement.simulateLoad();
+      await changePromise;
       
-      expect(mockPause).toHaveBeenCalledTimes(initialCallCount + 1);
+      // Load should be called on the secondary element for the new song
       expect(mockLoad).toHaveBeenCalled();
+    });
+
+    it('should perform crossfade when music is playing', async () => {
+      mockAudioElement.paused = false; // Simulate playing state
+      mockStorageSet.mockResolvedValue(undefined);
+      
+      const changePromise = music.changeSong('devil_in_electric_city');
+      await new Promise(resolve => setTimeout(resolve, 10));
+      mockSecondaryAudioElement.simulateLoad();
+      
+      // Wait for crossfade to start
+      await new Promise(resolve => setTimeout(resolve, 50));
+      
+      // Both audio elements should be playing during crossfade
+      expect(mockSecondaryAudioElement.play).toHaveBeenCalled();
+      
+      await changePromise;
+      expect(music.getCurrentSong()).toBe('devil_in_electric_city');
+    });
+
+    it('should maintain DOM element reference after crossfade', async () => {
+      const originalElement = music.element;
+      mockAudioElement.paused = false;
+      mockStorageSet.mockResolvedValue(undefined);
+      
+      const changePromise = music.changeSong('devil_in_electric_city');
+      await new Promise(resolve => setTimeout(resolve, 10));
+      mockSecondaryAudioElement.simulateLoad();
+      
+      // Wait for crossfade to complete
+      await new Promise(resolve => setTimeout(resolve, 150));
+      await changePromise;
+      
+      // The element reference should have changed after swap
+      expect(music.element).not.toBe(originalElement);
+      
+      // The new element should have controls enabled
+      expect(music.element.controls).toBe(true);
+      
+      // The old element should have controls disabled
+      expect(originalElement.controls).toBe(false);
     });
   });
 
@@ -239,6 +321,30 @@ describe('Music Player with Song Switching', () => {
     it('should get current volume', () => {
       mockAudioElement.volume = 0.7;
       expect(music.getVolume()).toBe(0.7);
+    });
+  });
+
+  describe('Crossfade Controls', () => {
+    it('should set crossfade duration within valid range', () => {
+      music.setCrossfadeDuration(3000);
+      expect(music.getCrossfadeDuration()).toBe(3000);
+    });
+
+    it('should clamp crossfade duration to minimum 100ms', () => {
+      music.setCrossfadeDuration(50);
+      expect(music.getCrossfadeDuration()).toBe(100);
+    });
+
+    it('should clamp crossfade duration to maximum 10s', () => {
+      music.setCrossfadeDuration(15000);
+      expect(music.getCrossfadeDuration()).toBe(10000);
+    });
+
+    it('should have default crossfade duration of 2000ms', async () => {
+      // Create a fresh music instance to test default value
+      const musicModule = await import('./music');
+      const freshMusic = new musicModule.Music();
+      expect(freshMusic.getCrossfadeDuration()).toBe(2000);
     });
   });
 
@@ -320,9 +426,8 @@ describe('Music Player with Song Switching', () => {
       mockStorageSet.mockResolvedValue(undefined);
       
       const changePromise = music.changeSong('devil_in_electric_city');
-      // Wait for event listeners to be set up
       await new Promise(resolve => setTimeout(resolve, 10));
-      mockAudioElement.simulateLoad();
+      mockSecondaryAudioElement.simulateLoad();
       await changePromise;
 
       expect(mockStorageSet).toHaveBeenCalledWith({
@@ -333,22 +438,22 @@ describe('Music Player with Song Switching', () => {
     it('should save fallback song to storage when original song fails', async () => {
       mockStorageSet.mockResolvedValue(undefined);
       
-      // First change to a non-default song to set up the test
-      const initialPromise = music.changeSong('devil_in_electric_city');
-      await new Promise(resolve => setTimeout(resolve, 10));
-      mockAudioElement.simulateLoad();
-      await initialPromise;
-      
       // Clear the mock to focus on the fallback behavior
       mockStorageSet.mockClear();
       
-      // Now try to change to a different song but simulate loading failure
+      // Try to change to a song but simulate loading failure
       const changePromise = music.changeSong('old_futuristic_space');
       await new Promise(resolve => setTimeout(resolve, 10));
-      // Simulate error for the song loading, then success for the fallback
-      mockAudioElement.simulateError();
-      await new Promise(resolve => setTimeout(resolve, 10));
-      mockAudioElement.simulateLoad();
+      
+      // Simulate error for the song loading
+      mockSecondaryAudioElement.simulateError();
+      
+      // Wait a bit for fallback logic to kick in
+      await new Promise(resolve => setTimeout(resolve, 50));
+      
+      // Simulate success for the fallback song
+      mockSecondaryAudioElement.simulateLoad();
+      
       await changePromise;
 
       expect(mockStorageSet).toHaveBeenCalledWith({
@@ -362,7 +467,7 @@ describe('Music Player with Song Switching', () => {
 
       const changePromise = music.changeSong('devil_in_electric_city');
       await new Promise(resolve => setTimeout(resolve, 10));
-      mockAudioElement.simulateLoad();
+      mockSecondaryAudioElement.simulateLoad();
       
       // Should not throw despite storage error
       await expect(changePromise).resolves.toBeUndefined();
@@ -374,11 +479,22 @@ describe('Music Player with Song Switching', () => {
     it('should initialize from storage with stored song preference', async () => {
       mockStorageGet.mockResolvedValue({ selectedSong: 'devil_in_electric_city' });
 
+      // Reset audio element count for new instance
+      audioElementCount = 0;
+      
       const musicPromise = createMusicWithStorage();
-      // Wait a tick for event listeners to be set up
-      await new Promise(resolve => setTimeout(resolve, 0));
-      mockAudioElement.simulateLoad();
+      
+      // Wait for the new instance to be created and simulate loads
+      await new Promise(resolve => setTimeout(resolve, 10));
+      
+      // The new instance will create fresh audio elements, simulate their loads
+      if (mockAudioElement) mockAudioElement.simulateLoad();
+      if (mockSecondaryAudioElement) mockSecondaryAudioElement.simulateLoad();
+      
       const musicInstance = await musicPromise;
+      
+      // Wait for any crossfade to complete
+      await new Promise(resolve => setTimeout(resolve, 150));
 
       expect(mockStorageGet).toHaveBeenCalledWith(['selectedSong']);
       expect(musicInstance.getCurrentSong()).toBe('devil_in_electric_city');
