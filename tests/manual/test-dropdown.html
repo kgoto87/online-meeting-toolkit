@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Song Selector Dropdown</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        
+        .container {
+            background-color: rgba(200, 200, 200, 0.5);
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            position: relative;
+        }
+        
+        .draggable {
+            cursor: move;
+            background-color: rgba(150, 150, 150, 0.3);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        
+        .song-selector {
+            width: 100%;
+            height: 24px;
+            background-color: rgba(200, 200, 200, 0.5);
+            border: 1px solid rgba(150, 150, 150, 0.3);
+            border-radius: 4px;
+            font-size: 12px;
+            color: #333;
+            cursor: pointer;
+            padding: 2px 8px 2px 4px;
+            margin-bottom: 10px;
+        }
+        
+        .song-selector:focus {
+            outline: 2px solid rgba(100, 150, 255, 0.5);
+            outline-offset: 1px;
+            background-color: rgba(200, 200, 200, 0.9);
+            border-color: rgba(100, 150, 255, 0.8);
+        }
+        
+        .song-selector[aria-expanded="true"] {
+            z-index: 1000000;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <h1>Song Selector Dropdown Test</h1>
+    
+    <div class="container" id="testContainer">
+        <div class="draggable">Draggable Area (try dragging this)</div>
+        
+        <select class="song-selector" aria-label="Select background music">
+            <option value="yugure_avenue">Yugure Avenue</option>
+            <option value="devil_in_electric_city">Devil in Electric City</option>
+            <option value="gong">Gong</option>
+        </select>
+        
+        <div>Click on the dropdown above - it should work without being blocked by drag events</div>
+    </div>
+
+    <script>
+        // Simulate the MouseEvents class behavior
+        class TestMouseEvents {
+            constructor(target) {
+                this.target = target;
+                this.x = 0;
+                this.y = 0;
+                target.addEventListener("mousedown", (e) => this.startDragging(e));
+            }
+
+            startDragging(e) {
+                // Don't start dragging if the click is on an interactive element
+                const target = e.target;
+                if (this.isInteractiveElement(target)) {
+                    console.log('Skipping drag for interactive element:', target.tagName);
+                    return;
+                }
+                
+                console.log('Starting drag');
+                e.preventDefault();
+                this.x = e.clientX;
+                this.y = e.clientY;
+                document.addEventListener("mouseup", this.onMouseUp);
+                document.addEventListener("mousemove", this.onMouseMove);
+                this.target.classList.add("dragging");
+            }
+
+            isInteractiveElement(element) {
+                const interactiveElements = ['SELECT', 'OPTION', 'INPUT', 'BUTTON', 'TEXTAREA', 'A'];
+                
+                if (interactiveElements.includes(element.tagName)) {
+                    return true;
+                }
+                
+                if (element.hasAttribute('tabindex') || 
+                    element.hasAttribute('role') || 
+                    element.classList.contains('song-selector')) {
+                    return true;
+                }
+                
+                let parent = element.parentElement;
+                while (parent && parent !== this.target) {
+                    if (interactiveElements.includes(parent.tagName) || 
+                        parent.classList.contains('song-selector')) {
+                        return true;
+                    }
+                    parent = parent.parentElement;
+                }
+                
+                return false;
+            }
+
+            onMouseUp = () => {
+                console.log('Ending drag');
+                document.removeEventListener("mouseup", this.onMouseUp);
+                document.removeEventListener("mousemove", this.onMouseMove);
+                this.target.classList.remove("dragging");
+            }
+
+            onMouseMove = (e) => {
+                e.preventDefault();
+                const diffInX = this.x - e.clientX;
+                const diffInY = this.y - e.clientY;
+                this.x = e.clientX;
+                this.y = e.clientY;
+
+                this.target.style.left = `${this.target.offsetLeft - diffInX}px`;
+                this.target.style.top = `${this.target.offsetTop - diffInY}px`;
+                this.target.style.position = 'absolute';
+            }
+        }
+
+        // Initialize the test
+        const container = document.getElementById('testContainer');
+        new TestMouseEvents(container);
+        
+        // Add change listener to the select
+        const select = document.querySelector('.song-selector');
+        select.addEventListener('change', (e) => {
+            console.log('Song changed to:', e.target.value);
+            alert('Song changed to: ' + e.target.options[e.target.selectedIndex].text);
+        });
+    </script>
+</body>
+</html>

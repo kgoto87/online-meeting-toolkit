@@ -18,8 +18,9 @@
     padding: 0.5em 0 0;
     cursor: grab;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: visible; // Allow content to be visible (important for dropdowns)
     min-width: 164px;
+    min-height: auto; // Allow container to grow with content
 
     &.dragging {
         cursor: grabbing;
@@ -154,11 +155,95 @@
     }
 
     .music-player {
+        min-height: 65px; // Ensure enough space for song selector + audio controls
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 4px; // Add some bottom padding
+        
+        .song-selector {
+            width: 100%;
+            height: 24px;
+            background-color: rgba(200, 200, 200, 0.5);
+            border: 1px solid rgba(150, 150, 150, 0.3);
+            border-radius: 4px;
+            font-family: "LouisGeorgeCafe", sans-serif;
+            font-size: 12px;
+            color: #333;
+            cursor: pointer;
+            padding: 2px 8px 2px 4px;
+            margin-bottom: 2px;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 4px center;
+            background-size: 12px;
+
+            &:hover {
+                background-color: rgba(200, 200, 200, 0.9);
+                border-color: rgba(150, 150, 150, 0.6);
+            }
+
+            &:focus {
+                outline: 2px solid rgba(100, 150, 255, 0.5);
+                outline-offset: 1px;
+                background-color: rgba(200, 200, 200, 0.9);
+                border-color: rgba(100, 150, 255, 0.8);
+            }
+
+            &:active {
+                background-color: rgba(180, 180, 180, 0.9);
+            }
+
+            // Ensure proper keyboard navigation
+            &:focus-visible {
+                outline: 2px solid rgba(100, 150, 255, 0.8);
+                outline-offset: 1px;
+            }
+
+            // Ensure dropdown appears above all other elements
+            &[aria-expanded="true"] {
+                z-index: 1000000;
+                position: relative;
+            }
+
+            option {
+                background-color: rgba(255, 255, 255, 0.95);
+                color: #333;
+                padding: 4px 8px;
+                font-family: "LouisGeorgeCafe", sans-serif;
+                font-size: 12px;
+
+                &:hover {
+                    background-color: rgba(100, 150, 255, 0.1);
+                }
+
+                &:checked {
+                    background-color: rgba(100, 150, 255, 0.2);
+                    font-weight: bold;
+                }
+            }
+
+            // Responsive behavior for smaller screens
+            @media (max-width: 300px) {
+                font-size: 11px;
+                height: 22px;
+                padding: 1px 6px 1px 3px;
+                background-size: 10px;
+                background-position: right 3px center;
+            }
+        }
+
         audio {
             height: 34px;
             vertical-align: bottom;
             width: 100%;
             cursor: pointer;
+            border-radius: 4px;
+            margin-top: 2px; // Slightly more space from song selector
+            flex-shrink: 0; // Prevent audio element from shrinking
 
             &::-webkit-media-controls-timeline,
             &::-webkit-media-controls-current-time-display,
@@ -166,13 +251,25 @@
                 display: none;
             }
             &::-webkit-media-controls-enclosure {
-                border-radius: 0;
+                border-radius: 4px;
                 background-color: rgba(200, 200, 200, 0.5);
+                border: 1px solid rgba(150, 150, 150, 0.3);
+                transition: background-color 0.2s ease, border-color 0.2s ease;
             }
 
             &:hover {
                 &::-webkit-media-controls-enclosure {
                     background-color: rgba(200, 200, 200, 0.9);
+                    border-color: rgba(150, 150, 150, 0.6);
+                }
+            }
+
+            &:focus {
+                outline: 2px solid rgba(100, 150, 255, 0.5);
+                outline-offset: 1px;
+                
+                &::-webkit-media-controls-enclosure {
+                    border-color: rgba(100, 150, 255, 0.8);
                 }
             }
         }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Music Player Height Test</title>
+    <style>
+        .music-player {
+            min-height: 65px;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 4px;
+            background: rgba(200, 200, 200, 0.5);
+            padding: 8px;
+            border-radius: 8px;
+            width: 200px;
+        }
+        
+        .song-selector {
+            width: 100%;
+            height: 24px;
+            margin-bottom: 2px;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        audio {
+            height: 34px;
+            width: 100%;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Music Player Height Test</h1>
+    <div class="music-player">
+        <select class="song-selector">
+            <option>Yugure Avenue</option>
+            <option>Devil in Electric City</option>
+            <option>Gong</option>
+        </select>
+        <audio controls>
+            <source src="test.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+    <p>Both the dropdown and audio controls should be fully visible.</p>
+</body>
+</html>

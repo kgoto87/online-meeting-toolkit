@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Selector Styling Test</title>
+    <style>
+        @font-face {
+            font-family: "LouisGeorgeCafe";
+            src: url("../../src/public/assets/fonts/LouisGeorgecafe.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        #online-meeting-toolkit {
+            font-family: "LouisGeorgeCafe", sans-serif;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999999;
+            background-color: rgba(200, 200, 200, 0.5);
+            padding: 0.5em 0 0;
+            cursor: grab;
+            border-radius: 8px;
+            overflow: hidden;
+            min-width: 164px;
+        }
+
+        .music-player .song-selector {
+            width: 100%;
+            height: 24px;
+            background-color: rgba(200, 200, 200, 0.5);
+            border: 1px solid rgba(150, 150, 150, 0.3);
+            border-radius: 4px;
+            font-family: "LouisGeorgeCafe", sans-serif;
+            font-size: 12px;
+            color: #333;
+            cursor: pointer;
+            padding: 2px 8px 2px 4px;
+            margin-bottom: 2px;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 4px center;
+            background-size: 12px;
+        }
+
+        .music-player .song-selector:hover {
+            background-color: rgba(200, 200, 200, 0.9);
+            border-color: rgba(150, 150, 150, 0.6);
+        }
+
+        .music-player .song-selector:focus {
+            outline: 2px solid rgba(100, 150, 255, 0.5);
+            outline-offset: 1px;
+            background-color: rgba(200, 200, 200, 0.9);
+            border-color: rgba(100, 150, 255, 0.8);
+        }
+
+        .music-player .song-selector:active {
+            background-color: rgba(180, 180, 180, 0.9);
+        }
+
+        .music-player .song-selector:focus-visible {
+            outline: 2px solid rgba(100, 150, 255, 0.8);
+            outline-offset: 1px;
+        }
+
+        .music-player .song-selector option {
+            background-color: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 4px 8px;
+            font-family: "LouisGeorgeCafe", sans-serif;
+            font-size: 12px;
+        }
+
+        .music-player .song-selector option:hover {
+            background-color: rgba(100, 150, 255, 0.1);
+        }
+
+        .music-player .song-selector option:checked {
+            background-color: rgba(100, 150, 255, 0.2);
+            font-weight: bold;
+        }
+
+        .music-player audio {
+            height: 34px;
+            vertical-align: bottom;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 1px;
+        }
+
+        .info {
+            max-width: 600px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .test-section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .standalone-selector {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h1>Song Selector Styling Test</h1>
+        <p>This page tests the visual styling and accessibility features of the song selector component.</p>
+        <p><strong>Test Instructions:</strong></p>
+        <ul>
+            <li>Check that the dropdown has proper styling with rounded corners and hover effects</li>
+            <li>Verify keyboard navigation works (Tab, Enter, Arrow keys, Escape)</li>
+            <li>Test focus indicators are visible and accessible</li>
+            <li>Ensure the dropdown integrates well with the music player interface</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h3>Standalone Song Selector</h3>
+        <div class="music-player">
+            <select class="song-selector standalone-selector" aria-label="Select background music" role="combobox" tabindex="0" title="Choose background music track">
+                <option value="yugure_avenue" aria-label="Select Yugure Avenue">Yugure Avenue</option>
+                <option value="devil_in_electric_city" aria-label="Select Devil in Electric City">Devil in Electric City</option>
+                <option value="gong" aria-label="Select Gong">Gong</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h3>Integrated Music Player (Simulated)</h3>
+        <div id="online-meeting-toolkit">
+            <div class="music-player">
+                <select class="song-selector" aria-label="Select background music" role="combobox" tabindex="0" title="Choose background music track">
+                    <option value="yugure_avenue" aria-label="Select Yugure Avenue">Yugure Avenue</option>
+                    <option value="devil_in_electric_city" aria-label="Select Devil in Electric City">Devil in Electric City</option>
+                    <option value="gong" aria-label="Select Gong">Gong</option>
+                </select>
+                <audio controls>
+                    <source src="../../src/public/assets/musics/yugure_avenue.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h3>Accessibility Test Results</h3>
+        <div id="accessibility-results">
+            <p>Testing accessibility features...</p>
+        </div>
+    </div>
+
+    <script>
+        // Test accessibility features
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectors = document.querySelectorAll('.song-selector');
+            const results = document.getElementById('accessibility-results');
+            
+            let testResults = [];
+            
+            selectors.forEach((selector, index) => {
+                // Test ARIA attributes
+                const hasAriaLabel = selector.hasAttribute('aria-label');
+                const hasRole = selector.hasAttribute('role');
+                const hasTabIndex = selector.hasAttribute('tabindex');
+                const hasTitle = selector.hasAttribute('title');
+                
+                testResults.push(`Selector ${index + 1}:`);
+                testResults.push(`✓ ARIA Label: ${hasAriaLabel ? 'Present' : 'Missing'}`);
+                testResults.push(`✓ Role: ${hasRole ? 'Present' : 'Missing'}`);
+                testResults.push(`✓ Tab Index: ${hasTabIndex ? 'Present' : 'Missing'}`);
+                testResults.push(`✓ Title: ${hasTitle ? 'Present' : 'Missing'}`);
+                
+                // Test option labels
+                const options = selector.querySelectorAll('option');
+                const optionsWithLabels = Array.from(options).filter(opt => opt.hasAttribute('aria-label'));
+                testResults.push(`✓ Option Labels: ${optionsWithLabels.length}/${options.length} options have aria-label`);
+                testResults.push('');
+            });
+            
+            results.innerHTML = '<pre>' + testResults.join('\n') + '</pre>';
+            
+            // Add keyboard event listeners for testing
+            selectors.forEach(selector => {
+                selector.addEventListener('keydown', function(e) {
+                    console.log('Key pressed:', e.key, 'on selector');
+                });
+                
+                selector.addEventListener('focus', function() {
+                    console.log('Selector focused');
+                });
+                
+                selector.addEventListener('blur', function() {
+                    console.log('Selector blurred');
+                });
+                
+                selector.addEventListener('change', function() {
+                    console.log('Selection changed to:', this.value);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

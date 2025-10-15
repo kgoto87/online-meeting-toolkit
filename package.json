@@ -7,7 +7,7 @@
     "scripts": {
         "test": "vitest",
         "test-once": "vitest run",
-        "build": "tsc && vite build --emptyOutDir"
+        "build": "tsc --project tsconfig.build.json && vite build --emptyOutDir"
     },
     "author": "",
     "license": "ISC",
