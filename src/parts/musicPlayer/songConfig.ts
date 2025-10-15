@@ -1,5 +1,7 @@
 import YugureAvenue from "../../public/assets/musics/yugure_avenue.mp3";
 import DevilInElectricCity from "../../public/assets/musics/devil_in_electric_city.mp3";
+import OldFuturisticSpace from "../../public/assets/musics/old_futuristic_space.mp3";
+import ReunionPromise from "../../public/assets/musics/reunion_promise.mp3";
 
 /**
  * Configuration interface for song metadata
@@ -30,6 +32,18 @@ export const AVAILABLE_SONGS: SongConfig[] = [
     displayName: 'Devil in Electric City',
     filename: 'devil_in_electric_city.mp3',
     importPath: DevilInElectricCity
+  },
+  {
+    id: 'old_futuristic_space',
+    displayName: 'Old Futuristic Space',
+    filename: 'old_futuristic_space.mp3',
+    importPath: OldFuturisticSpace
+  },
+  {
+    id: 'reunion_promise',
+    displayName: 'Reunion Promise',
+    filename: 'reunion_promise.mp3',
+    importPath: ReunionPromise
   }
 ];
 
