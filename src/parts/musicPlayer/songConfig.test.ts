@@ -11,11 +11,13 @@ import {
 describe('songConfig', () => {
   describe('AVAILABLE_SONGS', () => {
     it('should contain all expected songs', () => {
-      expect(AVAILABLE_SONGS).toHaveLength(2);
+      expect(AVAILABLE_SONGS).toHaveLength(4);
       
       const songIds = AVAILABLE_SONGS.map(song => song.id);
       expect(songIds).toContain('yugure_avenue');
       expect(songIds).toContain('devil_in_electric_city');
+      expect(songIds).toContain('old_futuristic_space');
+      expect(songIds).toContain('reunion_promise');
     });
 
     it('should have valid song configuration structure', () => {
@@ -64,6 +66,8 @@ describe('songConfig', () => {
     it('should return true for valid song IDs', () => {
       expect(isValidSongId('yugure_avenue')).toBe(true);
       expect(isValidSongId('devil_in_electric_city')).toBe(true);
+      expect(isValidSongId('old_futuristic_space')).toBe(true);
+      expect(isValidSongId('reunion_promise')).toBe(true);
     });
 
     it('should return false for invalid song IDs', () => {
@@ -106,6 +110,8 @@ describe('songConfig', () => {
     it('should return the same ID for valid song IDs', () => {
       expect(getValidSongId('yugure_avenue')).toBe('yugure_avenue');
       expect(getValidSongId('devil_in_electric_city')).toBe('devil_in_electric_city');
+      expect(getValidSongId('old_futuristic_space')).toBe('old_futuristic_space');
+      expect(getValidSongId('reunion_promise')).toBe('reunion_promise');
     });
 
     it('should return default song ID for invalid IDs', () => {
@@ -122,7 +128,7 @@ describe('songConfig', () => {
   describe('getAllSongIds', () => {
     it('should return all song IDs in order', () => {
       const allIds = getAllSongIds();
-      expect(allIds).toEqual(['yugure_avenue', 'devil_in_electric_city']);
+      expect(allIds).toEqual(['yugure_avenue', 'devil_in_electric_city', 'old_futuristic_space', 'reunion_promise']);
     });
 
     it('should return array with same length as AVAILABLE_SONGS', () => {

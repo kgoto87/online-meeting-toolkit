@@ -317,9 +317,11 @@ describe('Music Player with Song Switching', () => {
     });
 
     it('should save song selection to storage when changing songs', async () => {
+      mockStorageSet.mockResolvedValue(undefined);
+      
       const changePromise = music.changeSong('devil_in_electric_city');
-      // Wait a tick for event listeners to be set up
-      await new Promise(resolve => setTimeout(resolve, 0));
+      // Wait for event listeners to be set up
+      await new Promise(resolve => setTimeout(resolve, 10));
       mockAudioElement.simulateLoad();
       await changePromise;
 
@@ -329,22 +331,23 @@ describe('Music Player with Song Switching', () => {
     });
 
     it('should save fallback song to storage when original song fails', async () => {
+      mockStorageSet.mockResolvedValue(undefined);
+      
       // First change to a non-default song to set up the test
       const initialPromise = music.changeSong('devil_in_electric_city');
-      await new Promise(resolve => setTimeout(resolve, 0));
+      await new Promise(resolve => setTimeout(resolve, 10));
       mockAudioElement.simulateLoad();
       await initialPromise;
       
       // Clear the mock to focus on the fallback behavior
       mockStorageSet.mockClear();
       
-      // Now try to change to another song but simulate loading failure
-      const changePromise = music.changeSong('devil_in_electric_city');
-      // Wait a tick for event listeners to be set up
-      await new Promise(resolve => setTimeout(resolve, 0));
+      // Now try to change to a different song but simulate loading failure
+      const changePromise = music.changeSong('old_futuristic_space');
+      await new Promise(resolve => setTimeout(resolve, 10));
       // Simulate error for the song loading, then success for the fallback
       mockAudioElement.simulateError();
-      await new Promise(resolve => setTimeout(resolve, 0));
+      await new Promise(resolve => setTimeout(resolve, 10));
       mockAudioElement.simulateLoad();
       await changePromise;
 
@@ -358,8 +361,7 @@ describe('Music Player with Song Switching', () => {
       mockStorageSet.mockRejectedValue(new Error('Storage error'));
 
       const changePromise = music.changeSong('devil_in_electric_city');
-      // Wait a tick for event listeners to be set up
-      await new Promise(resolve => setTimeout(resolve, 0));
+      await new Promise(resolve => setTimeout(resolve, 10));
       mockAudioElement.simulateLoad();
       
       // Should not throw despite storage error

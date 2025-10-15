@@ -18,7 +18,12 @@ class Music {
     
     // Initialize with valid song ID
     this.currentSongId = getValidSongId(initialSongId);
-    this.loadSong(this.currentSongId);
+    // Set the initial source and load
+    const songConfig = getSongById(this.currentSongId);
+    if (songConfig) {
+      this.audioElement.src = chrome.runtime.getURL(songConfig.importPath);
+      this.audioElement.load();
+    }
   }
 
   /**
